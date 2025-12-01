@@ -34,6 +34,7 @@ Follow the [Proxmox VE Installation Guide](https://pve.proxmox.com/wiki/Install_
 
 Use the provided Terraform configuration files to provision Talos Kubernetes on your Proxmox VE setup. Make sure to customize the variables as needed.
 
-```bashterraform init
+```bash
+terraform init
 terraform apply
 ```
