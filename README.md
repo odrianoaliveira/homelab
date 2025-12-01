@@ -10,7 +10,7 @@ Arch Linux → KVM/QEMU → Proxmox → Terraform → Talos → Kubernetes
 
 ### Core Setup
 
-* [ ] KVM/QEMU
+* [x] KVM/QEMU
 * [ ] Proxmox VE
 * [ ] Terraform
 * [ ] Talos Kubernetes (1 CP + 2 workers)
