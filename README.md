@@ -11,7 +11,7 @@ Arch Linux → KVM/QEMU → Proxmox → Terraform → Talos → Kubernetes
 ### Core Setup
 
 * [x] KVM/QEMU
-* [ ] Proxmox VE
+* [x] Proxmox VE
 * [ ] Terraform
 * [ ] Talos Kubernetes (1 CP + 2 workers)
 
@@ -26,9 +26,41 @@ Arch Linux → KVM/QEMU → Proxmox → Terraform → Talos → Kubernetes
 
 Follow the [Arch Linux KVM Guide](https://wiki.archlinux.org/title/KVM) to install and configure KVM/QEMU on your Arch Linux host.
 
+### Installing Virt-Manager & libvirt
+
+Install Virt-Manager for managing your virtual machines:
+
+```bash
+sudo pacman -S virt-manager virt-viewer libvirt dnsmasq bridge-utils openbsd-netcat
+sudo systemctl enable --now libvirtd
+sudo usermod -aG libvirt $(whoami)
+```
+
 ### Installing Proxmox VE
 
-Follow the [Proxmox VE Installation Guide](https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_Buster) to install Proxmox VE on top of your KVM/QEMU setup.
+Open Virt-Manager and create a new VM using the following configuration:
+
+**VM Details**
+* OS: "Generic Linux"
+* CPU:
+  * 4 cores (host-passthrough)
+  * Enable: "Host passthrough"
+  * Memory: 16 GB
+  * Disk: 128 GB (virtio-blk)
+  * Network: Bridge to LAN
+
+**Enable nested virtualization features**
+
+Under CPU configuration:
+* Mode: Host Passthrough
+* Check: "Enable virtualization features (VMX/SVM)"
+
+**Attach Proxmox ISO**
+
+* Download the ISO: https://www.proxmox.com/en/downloads
+* Attach it when creating the VM.
+* Install Proxmox normally
+* No special steps needed, just follow the installation process.
 
 ### Provisioning with Terraform
 
