@@ -8,7 +8,7 @@ crash.log
 override.tf
 override.tf.json
 
-# Sensitive variable files (keep examples committed instead)
+# Sensitive variable files
 *.tfvars
 *.tfvars.json
 
