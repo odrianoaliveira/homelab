@@ -11,8 +11,8 @@ Arch Linux → KVM/QEMU → Proxmox → Terraform → Talos → Kubernetes
 ### Core Setup
 
 * [x] KVM/QEMU
-* [ ] Proxmox VE
-* [ ] Terraform
+* [x] Proxmox VE
+* [x] Terraform
 * [ ] Talos Kubernetes (1 CP + 2 workers)
 
 ### Platform Add-Ons
@@ -40,7 +40,7 @@ sudo pacman -Syu terraform
 Check if it is working:.
 ```bash
 terraform version
-``
+```
 
 It's done.
 
@@ -50,3 +50,8 @@ It's done.
 This project manages infrastructure via Terraform.
 This [documentation](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs) describes how to use the Proxmox Terraform provider.
 
+This projects relies on the proxmox user / password authentication, configured in the steps above.
+
+### Provision Talos Kubernetes
+
+The documentation [Talos on Proxmox](https://docs.siderolabs.com/talos/v1.10/platform-specific-installations/virtualized-platforms/proxmox/) describes how to provision Talos Kubernetes on Proxmox.
