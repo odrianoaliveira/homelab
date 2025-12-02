@@ -30,11 +30,23 @@ Follow the [Arch Linux KVM Guide](https://wiki.archlinux.org/title/KVM) to insta
 
 Follow the [Proxmox VE Installation Guide](https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_Buster) to install Proxmox VE on top of your KVM/QEMU setup.
 
-### Provisioning with Terraform
+### Setting up Terraform
 
-Use the provided Terraform configuration files to provision Talos Kubernetes on your Proxmox VE setup. Make sure to customize the variables as needed.
-
+Installing Terraform.
 ```bash
-terraform init
-terraform apply
+sudo pacman -Syu terraform
 ```
+
+Check if it is working:.
+```bash
+terraform version
+``
+
+It's done.
+
+
+### Provision Promox resouces
+
+This project manages infrastructure via Terraform.
+This [documentation](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs) describes how to use the Proxmox Terraform provider.
+
