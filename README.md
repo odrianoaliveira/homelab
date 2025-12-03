@@ -62,7 +62,8 @@ Under CPU configuration:
 * Install Proxmox normally
 * No special steps needed, just follow the installation process.
 
-### Setting up Terraform
+## Terraform
+### Setting up
 
 Installing Terraform.
 ```bash
@@ -77,13 +78,42 @@ terraform version
 It's done.
 
 
-### Provision Promox resouces
+### Configuring Proxmox for Terraform
 
 This project manages infrastructure via Terraform.
 This [documentation](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs) describes how to use the Proxmox Terraform provider.
 
 This projects relies on the proxmox user / password authentication, configured in the steps above.
 
-### Provision Talos Kubernetes
+### Provision Talos VMs
 
 The documentation [Talos on Proxmox](https://docs.siderolabs.com/talos/v1.10/platform-specific-installations/virtualized-platforms/proxmox/) describes how to provision Talos Kubernetes on Proxmox.
+
+#### Pre-requisites
+
+1. Download the Talos ISO image from the [Talos Releases](https://github.com/siderolabs/talos/releases) page.
+2. Upload the ISO to Proxmox storage (e.g., `local:iso/talos-amd64.iso`).
+3. Create a Proxmox storage named `k8s-lvm` for Talos VM disks.
+
+#### Apply Terraform Configuration
+
+1. Navigate to the `terraform/` directory.
+2. Initialize Terraform:
+   ```bash
+   terraform init
+   ```
+3. Review the planned actions:
+   ```bash
+   terraform plan
+   ```
+4. Apply the configuration to create Talos VMs:
+   ```bash
+   terraform apply
+   ```
+5. Confirm the apply action when prompted.
+6. After completion, verify that the Talos VMs are running in Proxmox.
+
+You should see three Talos VMs created and running in your Proxmox environment.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fa7de471-5a4a-474d-b459-7f3f974bb36f" alt="Proxmox Talos VMs">
+</p>
