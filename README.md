@@ -113,7 +113,7 @@ The documentation [Talos on Proxmox](https://docs.siderolabs.com/talos/v1.10/pla
 5. Confirm the apply action when prompted.
 6. After completion, verify that the Talos VMs are running in Proxmox.
 
-You should see three Talos VMs created and running in your Proxmox environment.
+You should see three Talos VMs created (talos-01, talos-02, talos-03) and running in your Proxmox environment.
 <p align="center">
   <img src="https://github.com/user-attachments/assets/fa7de471-5a4a-474d-b459-7f3f974bb36f" alt="Proxmox Talos VMs">
 </p>
