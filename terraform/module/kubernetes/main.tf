@@ -1,3 +1,5 @@
+# this module creates Talos VMs on Proxmox for Kubernetes cluster
+
 terraform {
   required_providers {
     proxmox = {
@@ -8,36 +10,51 @@ terraform {
 }
 
 locals {
-  talos_noddes = {
+  talos_nodes = {
     "talos-01" = {
+      cpu         = "4"
+      memory      = "8192"
       target_node = "pve"
     }
     "talos-02" = {
+      cpu         = "2"
+      memory      = "4096"
       target_node = "pve"
     }
     "talos-03" = {
+      name        = "talos-03"
+      cpu         = "2"
+      memory      = "4096"
       target_node = "pve"
     }
   }
 }
 
 resource "proxmox_vm_qemu" "talos" {
-  for_each = local.talos_noddes
+  for_each = local.talos_nodes
 
-  name        = each.key
+  name = each.key
+  cpu {
+    cores = each.value.cpu
+  }
+  memory      = each.value.memory
   target_node = each.value.target_node
 
+  # SCSI controller (melhor para Talos)
+  scsihw = "virtio-scsi-pci"
+
   disks {
-    ide {
-      ide0 {
-        cdrom {
-          iso = "metal-adm64.iso"
+    scsi {
+      scsi0 {
+        disk {
+          size    = "40G"
+          storage = "k8s-lvm"
+          format  = "raw"
         }
       }
-      ide1 {
-        disk {
-          storage = "local-lvm"
-          size    = "100G"
+      scsi1 {
+        cdrom {
+          iso = "local:iso/talos-amd64.iso"
         }
       }
     }
@@ -45,7 +62,7 @@ resource "proxmox_vm_qemu" "talos" {
 
   network {
     id     = 0
-    model  = "e1000"
+    model  = "virtio"
     bridge = "vmbr0"
   }
 }
