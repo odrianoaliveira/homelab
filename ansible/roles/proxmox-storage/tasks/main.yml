@@ -1,0 +1,60 @@
+---
+- name: Ensure LVM tools are installed
+  package:
+    name: lvm2
+    state: present
+
+- name: Gather LVM facts
+  setup:
+    filter: ansible_lvm
+
+- name: Check if device exists
+  stat:
+    path: "{{ proxmox_storage_device }}"
+  register: device_stat
+  failed_when: not device_stat.stat.exists
+
+- name: Check if PV exists
+  command: pvdisplay {{ proxmox_storage_device }}
+  register: pv_check
+  changed_when: false
+  failed_when: false
+
+- name: Create physical volume
+  command: pvcreate {{ proxmox_storage_device }}
+  when: pv_check.rc != 0
+
+- name: Check if VG exists
+  command: vgdisplay {{ proxmox_storage_vg }}
+  register: vg_check
+  changed_when: false
+  failed_when: false
+
+- name: Create VG
+  command: vgcreate {{ proxmox_lvm_vg }} {{ proxmox_storage_device }}
+  when: vg_check.rc != 0
+
+- name: Check if LV exists
+  command: lvdisplay {{ proxmox_lvm_vg }}/{{ proxmox_lvm_pool }}
+  register: lv_check
+  changed_when: false
+  failed_when: false
+
+- name: Create thin pool LV
+  command: lvcreate --type thin-pool -l 100%FREE -n {{ proxmox_lvm_pool }} {{ proxmox_lvm_vg }}
+  when: lv_check.rc != 0
+
+- name: Check if Proxmox storage exists
+  shell: pvesm status -storage {{ proxmox_storage_id }}
+  register: storage_check
+  changed_when: false
+  failed_when: false
+
+- name: Create Proxmox storage
+  shell: |
+    pvesm add lvmthin {{ proxmox_storage_id }} \
+      --vgname {{ proxmox_lvm_vg }} \
+      --thinpool {{ proxmox_lvm_pool }} \
+      --content images,rootdir \
+      --nodes $(hostname)
+  when: storage_check.rc != 0

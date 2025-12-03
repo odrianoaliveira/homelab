@@ -12,6 +12,7 @@ Arch Linux → KVM/QEMU → Proxmox → Terraform → Talos → Kubernetes
 
 * [x] KVM/QEMU
 * [x] Proxmox VE
+* [ ] Ansible
 * [x] Terraform
 * [ ] Talos Kubernetes (1 CP + 2 workers)
 
@@ -62,11 +63,17 @@ Under CPU configuration:
 * Install Proxmox normally
 * No special steps needed, just follow the installation process.
 
+### Setting up Ansible
+
+```bash
+sudo pacman -S ansible ansible-lint openssh
+```
+
 ### Setting up Terraform
 
 Installing Terraform.
 ```bash
-sudo pacman -Syu terraform
+sudo pacman -S terraform sshpass
 ```
 
 Check if it is working:.
