@@ -1,0 +1,6 @@
+---
+- name: Bootstrap LVM-Thin Storage for Proxmox
+  hosts: proxmox
+  become: true
+  roles:
+    - proxmox-storage

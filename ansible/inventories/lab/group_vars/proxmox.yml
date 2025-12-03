@@ -1,0 +1,4 @@
+proxmox_storage_device: "/dev/vdb"
+proxmox_lvm_vg: "vg_k8s"
+proxmox_lvm_pool: "thinpool"
+proxmox_storage_id: "k8s-thin"
