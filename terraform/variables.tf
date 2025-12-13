@@ -3,18 +3,18 @@ variable "proxmox_api_url" {
   description = "Proxmox API URL, e.g., https://<host>:8006/api2/json"
 }
 
-variable "proxmox_user" {
+variable "proxmox_token_id" {
   type        = string
-  description = "Proxmox API username, e.g., terraform-prov@pve"
+  description = "Proxmox API token ID in the format user@realm!tokenname"
 }
 
-variable "proxmox_password" {
+variable "proxmox_token_secret" {
   type        = string
-  description = "Proxmox API user password"
+  description = "Proxmox API token secret value."
   sensitive   = true
 }
 
-variable "pm_tls_insecure" {
+variable "proxmox_tls_insecure" {
   type        = bool
   description = "Allow insecure TLS (self-signed certs). Set to false in production."
   default     = true

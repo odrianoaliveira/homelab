@@ -62,6 +62,14 @@ Under CPU configuration:
 * Install Proxmox normally
 * No special steps needed, just follow the installation process.
 
+
+Run the following command to grant user list access, to fix `Error: user terraform-prov@pve has valid credentials but cannot retrieve user list, check privilege separation of api token`
+
+```bash
+pveum aclmod / -token 'terraform-prov@pve!mytoken' -role TerraformProv
+```
+
+
 ## Terraform
 ### Setting up
 
