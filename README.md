@@ -18,7 +18,7 @@
       - [Pre-requisites](#pre-requisites)
       - [Apply Terraform Configuration](#apply-terraform-configuration)
       - [Configuring the Talos' nodes](#configuring-the-talos-nodes)
-    - [Using the Kubernetes cluster](#using-the-kubernetes-cluster)
+  - [Using the Kubernetes cluster](#using-the-kubernetes-cluster)
 
 
 A minimal, automated homelab for learning practical DevOps and Platform Engineering.
