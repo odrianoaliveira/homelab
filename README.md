@@ -119,9 +119,9 @@ The documentation [Talos on Proxmox](https://docs.siderolabs.com/talos/v1.10/pla
    terraform apply
    ```
 5. Confirm the apply action when prompted.
-6. After completion, verify that the Talos VMs are running in Proxmox.
+6. After it's finished, please verify that the Talos VMs are running in Proxmox.
 
 You should see three Talos VMs created (talos-01, talos-02, talos-03) and running in your Proxmox environment.
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fa7de471-5a4a-474d-b459-7f3f974bb36f" alt="Proxmox Talos VMs">
+   <img alt="Talos VM console" src="https://github.com/user-attachments/assets/fe705c9e-8ba0-41e2-a501-0a84fae4a559" />
 </p>
