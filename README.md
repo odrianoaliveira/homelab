@@ -1,5 +1,26 @@
 # Homelab Platform
 
+## Table of Contents
+
+- [Homelab Platform](#homelab-platform)
+  - [Roadmap](#roadmap)
+    - [Core Setup](#core-setup)
+    - [Platform Add-Ons](#platform-add-ons)
+    - [Extra](#extra)
+  - [Build](#build)
+    - [Installing KVM/QEMU](#installing-kvmqemu)
+    - [Installing Virt-Manager & libvirt](#installing-virt-manager--libvirt)
+    - [Installing Proxmox VE](#installing-proxmox-ve)
+  - [Terraform](#terraform)
+    - [Setting up](#setting-up)
+    - [Configuring Proxmox for Terraform](#configuring-proxmox-for-terraform)
+    - [Provision Talos VMs](#provision-talos-vms)
+      - [Pre-requisites](#pre-requisites)
+      - [Apply Terraform Configuration](#apply-terraform-configuration)
+      - [Configuring the Talos' nodes](#configuring-the-talos-nodes)
+    - [Using the Kubernetes cluster](#using-the-kubernetes-cluster)
+
+
 A minimal, automated homelab for learning practical DevOps and Platform Engineering.
 
 ```
