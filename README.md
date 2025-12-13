@@ -160,9 +160,8 @@ Accessing the k8s cluster:
 2. `kubectl cluster-info`
 
 This should prints the cluster infos as below.
-````
 
-```bash
+```shell
 Kubernetes control plane is running at https://192.168.8.141:6443
 CoreDNS is running at https://192.168.8.141:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 ```
