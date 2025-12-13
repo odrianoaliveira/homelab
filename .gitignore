@@ -17,6 +17,7 @@ override.tf.json
 
 # Talos configuration files
 _out/
+kubeconfig
 
 # Editor/OS
 .DS_Store
