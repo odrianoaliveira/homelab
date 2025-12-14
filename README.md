@@ -3,13 +3,14 @@
 ## Table of Contents
 
 - [Homelab Platform](#homelab-platform)
+  - [Table of Contents](#table-of-contents)
   - [Roadmap](#roadmap)
     - [Core Setup](#core-setup)
     - [Platform Add-Ons](#platform-add-ons)
-    - [Extra](#extra)
+    - [Backlog](#backlog)
   - [Build](#build)
     - [Installing KVM/QEMU](#installing-kvmqemu)
-    - [Installing Virt-Manager & libvirt](#installing-virt-manager--libvirt)
+    - [Installing Virt-Manager \& libvirt](#installing-virt-manager--libvirt)
     - [Installing Proxmox VE](#installing-proxmox-ve)
   - [Terraform](#terraform)
     - [Setting up](#setting-up)
@@ -34,16 +35,17 @@ Arch Linux → KVM/QEMU → Proxmox → Terraform → Talos → Kubernetes
 * [x] KVM/QEMU
 * [x] Proxmox VE
 * [x] Terraform
-* [x] Talos Kubernetes (1 CP + 2 workers)
+* [x] Bootstrap Talos Kubernetes (1 CP + 2 workers)
 
 ### Platform Add-Ons
 
 * [ ] Flux CD (GitOps)
 * [ ] Monitoring (Prometheus, Grafana, Loki)
 
-### Extra
+### Backlog
 
 * [ ] Manage VMs & Talos configuration via ansible
+* [ ] Setup HA k8s cluster with 3 control planes
 
 ## Build
 
