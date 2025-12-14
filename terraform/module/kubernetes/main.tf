@@ -15,11 +15,9 @@ terraform {
 
 locals {
   network = {
-    bridge     = "vmbr0"
-    cidr       = 24
-    gateway    = "192.168.8.1"
-    nameserver = ["1.1.1.1", "1.0.0.1"]
-    interface  = "ens18"
+    bridge      = "vmbr0"
+    interface   = "ens18"
+    nameservers = ["1.1.1.1", "1.0.0.1"]
   }
 
   talos_nodes = {
@@ -28,6 +26,7 @@ locals {
       memory      = 8192
       target_node = "pve"
       static_ip   = "192.168.8.141"
+      mac_address = "02:AD:BE:EF:00:01"
       role        = "controlplane"
     }
     "talos-02" = {
@@ -35,6 +34,7 @@ locals {
       memory      = 4096
       target_node = "pve"
       static_ip   = "192.168.8.142"
+      mac_address = "02:AD:BE:EF:00:02"
       role        = "worker"
     }
     "talos-03" = {
@@ -43,6 +43,7 @@ locals {
       memory      = 4096
       target_node = "pve"
       static_ip   = "192.168.8.143"
+      mac_address = "02:AD:BE:EF:00:03"
       role        = "worker"
     }
   }
@@ -53,20 +54,11 @@ locals {
       machine = {
         network = {
           hostname = k
-
           interfaces = [{
             interface = local.network.interface
-            addresses = [
-              "${v.static_ip}/${local.network.cidr}"
-            ]
-            dhcp = false
-            routes = [{
-              network = "0.0.0.0/0"
-              gateway = local.network.gateway
-            }]
+            dhcp      = true
           }]
-
-          nameservers = local.network.nameserver
+          nameservers = local.network.nameservers
         }
       }
     })
@@ -111,9 +103,10 @@ resource "proxmox_vm_qemu" "talos" {
   }
 
   network {
-    id     = 0
-    model  = "virtio"
-    bridge = local.network.bridge
+    id      = 0
+    model   = "virtio"
+    bridge  = local.network.bridge
+    macaddr = each.value.mac_address
   }
 }
 
