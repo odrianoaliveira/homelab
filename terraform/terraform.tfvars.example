@@ -1,5 +1,6 @@
 # Copy to terraform.tfvars and fill with your values
-proxmox_api_url  = "https://<proxmox-host>:8006/api2/json"
-proxmox_user     = "terraform-prov@pve"
-proxmox_password = "<REDACTED>"
-pm_tls_insecure  = true  # set to false when using valid TLS certs
+proxmox_api_url      = "https://<proxmox-host>:8006/api2/json"
+proxmox_token_id     = "proxmox token" 
+proxmox_token_secret = "<REDACTED>"
+cluster_name         = "the cluster name" 
+pm_tls_insecure      = true  # set to false when using valid TLS certs
