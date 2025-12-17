@@ -105,7 +105,3 @@ TDB
 ## 📫 Feedback and Collaboration
 - **Issues or Questions**: Open an issue on [GitHub](https://github.com/odrianoaliveira/homelab).
 - **Connect**: [LinkedIn](https://www.linkedin.com/in/adriano-oliveira)
-```
-
-
-
