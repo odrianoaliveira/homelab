@@ -20,13 +20,13 @@ For our Kubernetes homelab, we will use Calico as the CNI plugin.
 
 ### Positive
 - Calico is widely used and well-documented, which makes it accessible for learning.
-- Support for Network Policies: Calico fully supports Kubernetes NetworkPolicy, which lets us enforce security rules and try out zero-trust ideas.
-- Scalability: Calico works well in larger production settings as well as tiny homelabs.
+- Calico fully supports Kubernetes NetworkPolicy, which lets us enforce security rules and try out zero-trust ideas.
+- Calico works well in larger production settings as well as tiny homelabs.
 - Access to resources and troubleshooting assistance is guaranteed by a large community and ongoing development.
 
 ### Negative
-- Resource Overhead: Calico may introduce slightly more resource overhead compared to simpler CNI plugins like Flannel.
-- Complexity for Beginners: While Calico is user-friendly, its advanced features may require additional learning.
+- Calico may introduce slightly more resource overhead compared to simpler CNI plugins like Flannel.
+- While Calico is user-friendly, its advanced features may require additional learning.
 
 ## References
 - [Calico Documentation](https://projectcalico.docs.tigera.io/)
