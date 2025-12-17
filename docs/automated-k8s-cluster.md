@@ -26,7 +26,7 @@ This project demonstrates end-to-end platform engineering principles for deployi
 
 ```mermaid
 graph TD;
-    A[Arch Linux KVM Host] --> B[KVM Virtualization];
+    A[Arch Linux] --> B[KVM Virtualization];
     B --> C[Proxmox VE VM];
     C --> D[Talos OS Nodes];
     D --> E[Kubernetes Cluster];
