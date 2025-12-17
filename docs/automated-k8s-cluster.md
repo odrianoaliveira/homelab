@@ -46,10 +46,9 @@ graph TD;
 | Orchestration               | Kubernetes                  | Container orchestration for workloads.                                                                                                   |
 | Netwrorking                 | TDB                         | CNI for pods networking.                                                                                                                 |
 | Storage                     | TDB                         | Distributed storage solution for persistent volumes.                                                                                     |
+| IaC                         | Terraform                   | Provision Proxmox VE VMs and Talos nodes.                                                                                                |
 | GitOps                      | Flux CD                     | Automated, declarative deployments from Git.                                                                                             |
 | Observability               | Prometheus + Grafana + Loki | Metrics, logging, and monitoring for cluster health.                                                                                     |
-| IaC                         | Terraform                   | Provision Proxmox VE VMs and Talos nodes.                                                                                                |
-
 
 ## 📚 Lessons Learned
 1. Proxmox VE Virtualized on KVM:
