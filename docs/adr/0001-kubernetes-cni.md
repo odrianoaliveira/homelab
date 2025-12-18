@@ -6,15 +6,15 @@ Date: 2025-12-17
 Accepted
 
 ## Context
-In order to learn platform engineering techniques and automate infrastructure with Terraform, we are constructing a Kubernetes home lab. For pods to be able to talk to each other, follow security rules, and connect to outside systems, pod networking is a key part.
+To learn platform engineering techniques and automate infrastructure with Terraform, I am constructing a Kubernetes home lab. For pods to be able to talk to each other, follow security rules, and connect to outside systems, pod networking is a key part.
 
-We need a CNI plugin that is:
+I need a CNI plugin that is:
 - Easy to operate and appropriate for a homelab setting.
 - Allows network rules for testing and learning
 - Well-documented and scalable.
 
 ## Decision
-For our Kubernetes homelab, we will use Calico as the CNI plugin.
+For our Kubernetes homelab, I will use Calico as the CNI plugin.
 
 ## Consequences
 
