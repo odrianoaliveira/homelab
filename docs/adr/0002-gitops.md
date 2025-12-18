@@ -37,4 +37,4 @@ Adopt Flux CD as the GitOps operator for my Kubernetes cluster.
 ## References
 
 - [Flux CD Documentation](https://fluxcd.io/docs/)
-- [OpenGitOps](https://opengitops.dev/)
+- [What is GitOps?](https://www.gitops.tech/#what-is-gitops)
