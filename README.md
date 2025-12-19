@@ -2,26 +2,71 @@
 
 Exploring declarative infrastructure, automation, Kubernetes, and GitOps for the AI boom era.
 
+## Overview
+
+This project aims to build a **platform service environment** that mimics production-grade practices used by leading technology organizations.
+
+The platform is responsible for:
+
+1. Owning the end-to-end developer experience from code commit to production deployment.
+2. Kubernetes cluster lifecycle management, including provisioning, upgrades, security baselines, and governance guardrails.
+3. Multi-tenant safety through namespace isolation, policies, and resource boundaries.
+4. Standardized delivery pipelines from CI to artifact creation to GitOps-based deployment.
+5. Observability, operational visibility, and platform-level SLOs.
+6. Platform APIs and UX, including portals, CLI abstractions, and documentation.
+
 ## Goals
 
-1. Mirrors how companies manage private cloud / edge infra
-2. Fully reproducible infrastructure.
-3. Kubernetes as an API, not pets
+1. A single, opinionated deployment workflow:
+   `git push` or PR merge ⇒ the platform handles build, deploy, rollout, and observability.
+2. Clear golden paths:
+   * Service template
+   * Add dependencies
+   * Expose endpoints
+   * Access logs, metrics, and traces
+3. Minimal or zero Kubernetes objects authored directly by product teams.
+4. Developers interact with **platform abstractions**, not raw Kubernetes primitives.
 
 ## Non-Goals
 
+1. Building a commercial or customer-facing platform.
+2. Supporting multiple cloud providers or hybrid cloud environments.
+3. Implementing complex multi-cluster or multi-region architectures.
+
 ## Roadmap
 
-### Declarative infrastructure (Proxmox + Terraform) :heavy_check_mark:
-  - VM Provisioning
-  - K8s control-plane node
-  - k8s worker nodes
-  - Network (bridge)
+### Platform Foundations
 
-### Kubernetes the Platform Way (Talos + Terraform) :heavy_check_mark:
-  - Immutable OS
-  - API driven
-  - k8s control-plane & worker nodes
+- [x] Set up Proxmox virtualization environment.
+- [x] Deploy Talos OS on Proxmox VMs.
+- [x] Provision Kubernetes cluster using Talos and Terraform.
+  
+### GitOps Control Plane (Flux CD)
+
+- [ ] Establish GitOps as the platform control plane using Flux CD.
+- [ ] Bind Flux reconciliation to a specific Git repository and branch.
+- [ ] Treat Flux as a first-class, versioned platform dependency.
+
+### Observability Baseline
+
+- [ ] Deploy Prometheus as the platform metrics backend.
+- [ ] Deploy Loki for centralized log aggregation.
+- [ ] Deploy Grafana with platform-level dashboards.
+- [ ] Define baseline alerting rules and notification channels.
+
+### Platform Guardrails
+
+- [ ] Namespace structure and ownership model.
+- [ ] Resource guardrails (quotas, limits, defaults).
+- [ ] Security guardrails (Pod Security Standards, admission policies).
+- [ ] Network guardrails (namespace isolation, ingress/egress policies).
+- [ ] Policy-as-code enforcement for platform standards.
+
+### Operational Readiness
+
+- [ ] “Day 2” operations documentation (upgrades, recovery, troubleshooting).
+- [ ] Backup and disaster recovery strategy for cluster-critical components.
+- [ ] Deterministic cluster rebuild procedures.
 
 ## 🏗️ Architecture
 
@@ -47,7 +92,7 @@ graph TD
     subgraph IaC
         J[Git Repository] --> |Reads Configs| E[Terraform]
         E -->|Provisions| A
-        E -->|Bootsrap Talos Cluster| B
+        E -->|Bootstrap Talos Cluster| B
         E -->|Bootstrap Flux CD| I[Flux CD]
         E -->|Persists| P[Terraform State]
     end
@@ -60,33 +105,13 @@ graph TD
         H -->|Stores Logs| D
     end
 ```
-```
-```
-
-- **Proxmox**: Virtualization and bare-metal management.
-- **Talos**: Minimal, secure OS for Kubernetes.
-- **Kubernetes**: Orchestration for containerized workloads.
-- **Terraform**: IaC tool to provision and manage infrastructure declaratively.
-- **Observability**: Prometheus, Grafana, and Loki for observability.
-
-## 🚀 Key Projects
-### Automated Kubernetes Cluster
-- **Goal**: Deploy a production-grade Kubernetes cluster using Terraform and Talos
-- **Outcome**: Reduced manual setup time by 80%.
-- **Code**: [k8s-infra](k8s-infra/Terraform)
-
-### GitOps
-- **Goal**: Apply DevOps practices like version control, collaboration, and CI/CD to ensure reproducible deployments.
-- **Tools**: Git, Flux CD
-- **Outcome**: GitOps configuration generates the same infrastructure every time it is deployed.
-- **Code**: [monitoring](link-to-folder)
 
 ## 🎯 Lessons Learned
 
 ## 🔮 Future Plans
-- Experiment with **GPU passthrough** for AI training.
-- Explore **MLOps tools** (e.g., Kubeflow, Argo Workflows).
-- Add **edge computing** nodes for IoT simulations.
+- Experiment with GPU passthrough for AI workloads.
+- Explore MLOps tools (e.g., Kubeflow, Argo Workflows).
+- Add edge-computing nodes for IoT simulations.
 
 ## 📫 Connect
 - [LinkedIn](https://www.linkedin.com/in/adriano-oliveira/)
