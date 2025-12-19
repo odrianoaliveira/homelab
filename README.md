@@ -2,6 +2,26 @@
 
 Exploring declarative infrastructure, automation, Kubernetes, and GitOps for the AI boom era.
 
+## Goals
+
+1. Mirrors how companies manage private cloud / edge infra
+2. Fully reproducible infrastructure.
+3. Kubernetes as an API, not pets
+
+## Non-Goals
+
+## Roadmap
+
+[x] - Declarative infrastructure (Proxmox + Terraform)
+  - VM Provisioning
+  - K8s control-plane node
+  - k8s worker nodes
+  - Network (bridge)
+[x] - Kubernetes the Platform Way (Talos + Terraform)
+  - Immutable OS
+  - API driven
+  - k8s control-plane & worker nodes
+
 ## 🏗️ Architecture
 
 ```mermaid
