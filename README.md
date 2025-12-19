@@ -64,7 +64,7 @@ The platform is responsible for:
 
 ### Operational Readiness
 
-- [ ] “Day 2” operations documentation (upgrades, recovery, troubleshooting).
+- [ ] "Day 2" operations documentation (upgrades, recovery, troubleshooting).
 - [ ] Backup and disaster recovery strategy for cluster-critical components.
 - [ ] Deterministic cluster rebuild procedures.
 
