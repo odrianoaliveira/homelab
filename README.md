@@ -20,7 +20,7 @@ graph TD
     subgraph GitOps
         I[Flux CD] -->|Syncs Configs| C
         I -->|Syncs Configs| D
-        J[Git Repository] -->|Stores Configs| I
+        J[Git Repository] -->|Reads Configs| I
     end
 
     subgraph IaC
