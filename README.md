@@ -1,6 +1,6 @@
 # Platform Engineering Homelab
 
-Exploring declarative infrastructure, Kubernetes, and automation for the AI boom era.
+Exploring declarative infrastructure, automation, Kubernetes, and GitOps for the AI boom era.
 
 ## 🏗️ Architecture
 
