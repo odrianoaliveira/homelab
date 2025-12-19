@@ -1,6 +1,6 @@
 ---
 name: Task
-about: Concrete platform implementation task
+about: Concrete implementation task
 title: ""
 labels: ["platform", "task"]
 assignees: []
