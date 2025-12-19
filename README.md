@@ -12,12 +12,13 @@ Exploring declarative infrastructure, automation, Kubernetes, and GitOps for the
 
 ## Roadmap
 
-[x] - Declarative infrastructure (Proxmox + Terraform)
+### Declarative infrastructure (Proxmox + Terraform) [x]
   - VM Provisioning
   - K8s control-plane node
   - k8s worker nodes
   - Network (bridge)
-[x] - Kubernetes the Platform Way (Talos + Terraform)
+
+### Kubernetes the Platform Way (Talos + Terraform) [x]
   - Immutable OS
   - API driven
   - k8s control-plane & worker nodes
