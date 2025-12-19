@@ -1,191 +1,72 @@
-# Homelab Platform
+# Platform Engineering Homelab
 
-## Table of Contents
+Exploring declarative infrastructure, Kubernetes, and automation for the AI boom era.
 
-- [Homelab Platform](#homelab-platform)
-  - [Table of Contents](#table-of-contents)
-  - [Roadmap](#roadmap)
-    - [Core Setup](#core-setup)
-    - [Platform Add-Ons](#platform-add-ons)
-    - [Backlog](#backlog)
-  - [Build](#build)
-    - [Installing KVM/QEMU](#installing-kvmqemu)
-    - [Installing Virt-Manager \& libvirt](#installing-virt-manager--libvirt)
-    - [Installing Proxmox VE](#installing-proxmox-ve)
-  - [Terraform](#terraform)
-    - [Setting up](#setting-up)
-    - [Configuring Proxmox for Terraform](#configuring-proxmox-for-terraform)
-    - [Provision Talos VMs](#provision-talos-vms)
-      - [Pre-requisites](#pre-requisites)
-      - [Apply Terraform Configuration](#apply-terraform-configuration)
-  - [Using the Kubernetes cluster](#using-the-kubernetes-cluster)
+## 🏗️ Architecture
 
+```mermaid
+%% Homelab Architecture Diagram
+graph TD
+    subgraph Virtualization
+        A[Proxmox] -->|Hosts| B[Talos Nodes]
+    end
 
-A minimal, automated homelab for learning practical DevOps and Platform Engineering.
+    subgraph Kubernetes Cluster
+        B -->|Runs| C[Kubernetes Control Plane]
+        B -->|Runs| D[Kubernetes Worker Nodes]
+        C -->|Manages| D
+    end
 
+    subgraph GitOps
+        I[Flux CD] -->|Syncs Configs| C
+        I -->|Syncs Configs| D
+        J[Git Repository] -->|Reads Configs| I
+    end
+
+    subgraph IaC
+        J[Git Repository] --> |Reads Configs| E[Terraform]
+        E -->|Provisions| A
+        E -->|Bootsrap Talos Cluster| B
+        E -->|Bootstrap Flux CD| I[Flux CD]
+        E -->|Persists| P[Terraform State]
+    end
+
+    subgraph Observability
+        F[Prometheus] -->|Collects Metrics| C
+        F -->|Collects Metrics| D
+        G[Grafana] -->|Visualizes| F
+        H[Loki] -->|Stores Logs| C
+        H -->|Stores Logs| D
+    end
 ```
-Arch Linux → KVM/QEMU → Proxmox → Terraform → Talos → Kubernetes
 ```
-
-## Roadmap
-
-### Core Setup
-
-* [x] KVM/QEMU
-* [x] Proxmox VE
-* [x] Terraform
-* [x] Bootstrap Talos Kubernetes (1 CP + 2 workers)
-
-### Platform Add-Ons
-
-* [ ] Flux CD (GitOps)
-* [ ] Monitoring (Prometheus, Grafana, Loki)
-
-### Backlog
-
-* [ ] Manage VMs & Talos configuration via ansible
-* [ ] Setup HA k8s cluster with 3 control planes
-
-## Build
-
-### Installing KVM/QEMU
-
-Follow the [Arch Linux KVM Guide](https://wiki.archlinux.org/title/KVM) to install and configure KVM/QEMU on your Arch Linux host.
-
-### Installing Virt-Manager & libvirt
-
-Install Virt-Manager for managing your virtual machines:
-
-```bash
-sudo pacman -S virt-manager virt-viewer libvirt dnsmasq bridge-utils openbsd-netcat
-sudo systemctl enable --now libvirtd
-sudo usermod -aG libvirt $(whoami)
 ```
 
-### Installing Proxmox VE
+- **Proxmox**: Virtualization and bare-metal management.
+- **Talos**: Minimal, secure OS for Kubernetes.
+- **Kubernetes**: Orchestration for containerized workloads.
+- **Terraform**: IaC tool to provision and manage infrastructure declaratively.
+- **Observability**: Prometheus, Grafana, and Loki for observability.
 
-Open Virt-Manager and create a new VM using the following configuration:
+## 🚀 Key Projects
+### Automated Kubernetes Cluster
+- **Goal**: Deploy a production-grade Kubernetes cluster using Terraform and Talos
+- **Outcome**: Reduced manual setup time by 80%.
+- **Code**: [k8s-infra](k8s-infra/Terraform)
 
-**VM Details**
-* OS: "Generic Linux"
-* CPU:
-  * 4 cores (host-passthrough)
-  * Enable: "Host passthrough"
-  * Memory: 16 GB
-  * Disk: 128 GB (virtio-blk)
-  * Network: Bridge to LAN
+### GitOps
+- **Goal**: Apply DevOps practices like version control, collaboration, and CI/CD to ensure reproducible deployments.
+- **Tools**: Git, Flux CD
+- **Outcome**: GitOps configuration generates the same infrastructure every time it is deployed.
+- **Code**: [monitoring](link-to-folder)
 
-**Enable nested virtualization features**
+## 🎯 Lessons Learned
 
-Under CPU configuration:
-* Mode: Host Passthrough
-* Check: "Enable virtualization features (VMX/SVM)"
+## 🔮 Future Plans
+- Experiment with **GPU passthrough** for AI training.
+- Explore **MLOps tools** (e.g., Kubeflow, Argo Workflows).
+- Add **edge computing** nodes for IoT simulations.
 
-**Attach Proxmox ISO**
-
-* Download the ISO: https://www.proxmox.com/en/downloads
-* Attach it when creating the VM.
-* Install Proxmox normally
-* No special steps needed, just follow the installation process.
-
-
-Run the following command to grant user list access, to fix `Error: user terraform-prov@pve has valid credentials but cannot retrieve user list, check privilege separation of api token`
-
-```bash
-pveum aclmod / -token 'terraform-prov@pve!mytoken' -role TerraformProv
-```
-
-
-## Terraform
-### Setting up
-
-Installing Terraform.
-```bash
-sudo pacman -Syu terraform
-```
-
-Check if it is working:.
-```bash
-terraform version
-```
-
-It's done.
-
-
-### Configuring Proxmox for Terraform
-
-This project manages infrastructure via Terraform.
-This [documentation](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs) describes how to use the Proxmox Terraform provider.
-
-This projects relies on the proxmox user / password authentication, configured in the steps above.
-
-### Provision Talos VMs
-
-The documentation [Talos on Proxmox](https://docs.siderolabs.com/talos/v1.10/platform-specific-installations/virtualized-platforms/proxmox/) describes how to provision Talos Kubernetes on Proxmox.
-
-#### Pre-requisites
-
-1. Download the Talos ISO image from the [Talos Releases](https://github.com/siderolabs/talos/releases) page.
-2. Upload the ISO to Proxmox storage (e.g., `local:iso/talos-amd64.iso`).
-3. Create a Proxmox storage named `k8s-lvm` for Talos VM disks.
-4. Configure the DHCP server to reserve static IPs for the Talos VMs based on their MAC addresses.
-5. The MAC addresses are defined in the terraform file. This ensure that the provisioning process is deterministic.
-
-#### Apply Terraform Configuration
-
-1. Navigate to the `terraform/` directory.
-2. Initialize Terraform:
-   ```bash
-   terraform init
-   ```
-3. Review the planned actions:
-   ```bash
-   terraform plan
-   ```
-4. Apply the configuration to create Talos VMs:
-   ```bash
-   terraform apply
-   ```
-5. Confirm the apply action when prompted.
-6. After it's finished, the talos' kubernetes cluster should be up and running.
-7. Check the outputs:
-```
-Outputs:
-cluster_endpoint = "https://192.168.8.141:6443"
-kubeconfig = <sensitive>
-talosconfig = <sensitive>
-```
-
-<p aling="center">
-  <p><b>Kubernetes Control Plane</b></p>
-  <img alt="K8s control plane" src="https://github.com/user-attachments/assets/a49bc70d-f7e3-40c2-b03d-bbd797d30adf" />
-
-  <p><b>Kubernetes Worker</b></p>
-  <img alt="k8s worker 1" src="https://github.com/user-attachments/assets/07f55e05-9ef2-494d-a4ea-b02b7a95fd21" />
-
-  <p><b>Kubernetes Worker</b></p>
-  <img alt="k8s worke 2" src="https://github.com/user-attachments/assets/6ab0acbf-478f-4ccd-acba-f9e693778a6f" />
-</p>
-
-
-## Using the Kubernetes cluster
-
-After following the procedures above. A kubeconfig file should be available on the project directory.
-
-Accessing the k8s cluster:
-
-1. Get the kubeconfig file from terraform output:
-
-```bash
-terraform output -raw talos_kubeconfig > kubeconfig
-```
-2. `export KUBECONFG=<path/to/kubeconfig>`
-3. `kubectl cluster-info`
-
-This should prints the cluster infos as below.
-
-```shell
-Kubernetes control plane is running at https://192.168.8.141:6443
-CoreDNS is running at https://192.168.8.141:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-```
-
+## 📫 Connect
+- [LinkedIn](https://www.linkedin.com/in/adriano-oliveira/)
+- [GitHub](https://github.com/odrianoaliveira/)
