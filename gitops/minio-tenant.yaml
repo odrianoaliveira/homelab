@@ -1,0 +1,19 @@
+---
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  name: minio-tenant
+  namespace: minio
+spec:
+  credentials:
+    secret:
+      name: minio-creds
+      accessKey: "terraform-user"
+      secretKey: "super-secret-key"
+  pools:
+    - servers: 1
+      volumesPerServer: 1
+      size: 10Gi
+      storageClassName: "local-storage"  # Use your storage class
+  image: minio/minio:RELEASE.2024-09-17T00-09-17Z  # Explicitly specify the MinIO image
+  imagePullPolicy: IfNotPresent
