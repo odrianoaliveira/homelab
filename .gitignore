@@ -1,19 +1,20 @@
 # Terraform local files
-.terraform/
-*.tfstate
-*.tfstate.*
-crash.log
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/crash.log
+**/crash.*.log
 
 # Terraform overrides
-override.tf
-override.tf.json
+**/override.tf
+**/override.tf.json
 
 # Ansible
-.ansible/
+**/.ansible/
 
 # Sensitive variable files
-*.tfvars
-*.tfvars.json
+**/*.tfvars
+**/*.tfvars.json
 
 # Talos configuration files
 _out/
