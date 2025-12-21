@@ -48,6 +48,21 @@ locals {
     }
   }
 
+  talos_minio_disk_patch = yamlencode({
+    machine = {
+      disks = [
+        {
+          device = "/dev/sdb"
+          partitions = [
+            {
+              mountpoint = "/var/mnt/minio"
+            }
+          ]
+        }
+      ]
+    }
+  })
+
   talos_network_patches = {
     for k, v in local.talos_nodes :
     k => yamlencode({
@@ -76,6 +91,8 @@ locals {
 resource "proxmox_vm_qemu" "talos" {
   for_each = local.talos_nodes
 
+  onboot = true
+
   name = each.key
   cpu {
     cores = each.value.cpu
@@ -87,11 +104,24 @@ resource "proxmox_vm_qemu" "talos" {
 
   disks {
     scsi {
+      # Talos OS disk /dev/sda
       scsi0 {
         disk {
           size    = "40G"
           storage = "k8s-lvm"
           format  = "raw"
+        }
+      }
+
+      # Minio disk /dev/sdb for worker nodes
+      dynamic "scsi2" {
+        for_each = each.value.role == "worker" ? [1] : []
+        content {
+          disk {
+            size    = "20G"
+            storage = "minio-lvm"
+            format  = "raw"
+          }
         }
       }
       scsi1 {
@@ -120,9 +150,10 @@ data "talos_machine_configuration" "this" {
   machine_type     = each.value.role == "controlplane" ? "controlplane" : "worker"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
 
-  config_patches = [
-    local.talos_network_patches[each.key]
-  ]
+  config_patches = compact([
+    local.talos_network_patches[each.key],
+    each.value.role == "worker" ? local.talos_minio_disk_patch : null
+  ])
 }
 
 resource "talos_machine_configuration_apply" "controlplane" {
