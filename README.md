@@ -108,6 +108,9 @@ graph TD
 
 ## 🎯 Lessons Learned
 
+### IaC Talos
+- access the cluster `terraform output -raw kubeconfig > ~/.kube/config` && `kubectl cluster-info`
+
 ## 🔮 Future Plans
 - Experiment with GPU passthrough for AI workloads.
 - Explore MLOps tools (e.g., Kubeflow, Argo Workflows).
