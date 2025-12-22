@@ -13,6 +13,10 @@ terraform {
   }
 }
 
+module "minio" {
+  source = "./minio"
+}
+
 locals {
   network = {
     bridge      = "vmbr0"
