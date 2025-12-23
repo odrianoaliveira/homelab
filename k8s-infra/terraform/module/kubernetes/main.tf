@@ -10,7 +10,15 @@ terraform {
       source  = "siderolabs/talos"
       version = "~> 0.9"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.13"
+    }
   }
+}
+
+module "garage" {
+  source = "./garage"
 }
 
 locals {

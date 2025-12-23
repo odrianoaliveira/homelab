@@ -110,6 +110,7 @@ graph TD
 
 ### IaC Talos
 - access the cluster `terraform output -raw kubeconfig > ~/.kube/config` && `kubectl cluster-info`
+- Talosctl: `terraform output -raw talosconfig > ~/.talos/config` && `talosctl --talosconfig ~/.talos/config get nodes`
 
 ## 🔮 Future Plans
 - Experiment with GPU passthrough for AI workloads.

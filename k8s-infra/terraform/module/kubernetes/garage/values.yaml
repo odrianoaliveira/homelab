@@ -1,0 +1,26 @@
+commonLabels:
+  app.kubernetes.io/part-of: platform
+  app.kubernetes.io/component: object-store
+  env: homelab
+
+persistence:
+  enabled: true
+  meta:
+    storageClass: "garage-local"
+    size: 100Mi
+  data:
+    storageClass: "garage-local"
+    size: 1Gi
+    
+deployment:
+  replicatCount: 1
+
+# Explicitly single-node layout
+garage:
+  replicationFactor: 1
+  
+  s3:
+    api:
+      rootDomain: ".s3.garage.local"
+    web:
+      rootDomain: ".web.garage.local"
