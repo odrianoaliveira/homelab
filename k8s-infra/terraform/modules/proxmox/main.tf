@@ -9,6 +9,7 @@ terraform {
 
 resource "proxmox_vm_qemu" "nodes" {
   for_each = var.nodes
+  onboot   = true
 
   name = each.key
   cpu {
