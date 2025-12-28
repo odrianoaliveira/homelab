@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    proxmox = {
-      source  = "telmate/proxmox"
-      version = "3.0.2-rc06"
-    }
-  }
-}
 
 resource "proxmox_vm_qemu" "nodes" {
   for_each = var.nodes
