@@ -1,0 +1,31 @@
+commonLabels:
+  app.kubernetes.io/managed-by: terraform
+  app.kubernetes.io/part-of: tfstate-storage
+  team: platform
+
+garage:
+  replicationFactor: 1
+
+persistence:
+  enabled: true
+  meta:
+    size: 100Mi
+    hostPath: /mnt/disks/garage/meta
+  data:
+    size: 5Gi
+    hostPath: /mnt/disks/garage/data
+
+deployment:
+  replicaCount: 1  
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "100m"
+  limits:
+    memory: "1024Mi"
+    cpu: "100m"
+    
+
+# TODO liveness and readiness probes
+# TODO enable prometheus metrics
