@@ -14,6 +14,7 @@ resource "proxmox_vm_qemu" "nodes" {
 
   disks {
     scsi {
+      # Talos OS disk /dev/sda
       scsi0 {
         disk {
           size    = "40G"
@@ -24,6 +25,14 @@ resource "proxmox_vm_qemu" "nodes" {
       scsi1 {
         cdrom {
           iso = "local:iso/talos-amd64.iso"
+        }
+      }
+      # Minio disk /dev/sdb
+      scsi2 {
+        disk {
+          size    = "20G"
+          storage = "minio-lvm"
+          format  = "raw"
         }
       }
     }

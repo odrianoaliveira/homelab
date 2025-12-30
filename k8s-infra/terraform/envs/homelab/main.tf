@@ -53,3 +53,10 @@ module "cluster" {
     }
   }
 }
+
+module "garage" {
+  depends_on = [module.cluster]
+  source     = "../../modules/platform/garage"
+
+  nodes = ["talos-01", "talos-02", "talos-03"]
+}
