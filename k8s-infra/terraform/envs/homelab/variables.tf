@@ -19,3 +19,11 @@ variable "proxmox_tls_insecure" {
   description = "Allow insecure TLS (self-signed certs). Set to false in production."
   default     = true
 }
+
+
+variable "deploy_garage" {
+  description = "Whether to deploy the Garage platform"
+  type        = bool
+  default     = false
+}
+

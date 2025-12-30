@@ -30,3 +30,9 @@ variable "nodes" {
 variable "cluster_name" {
   type = string
 }
+
+variable "garage_mount_path" {
+  description = "The mount path for Garage local PVs."
+  type        = string
+  default     = "/var/mnt/garage"
+}

@@ -3,5 +3,8 @@ terraform {
     talos = {
       source = "siderolabs/talos"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
   }
 }

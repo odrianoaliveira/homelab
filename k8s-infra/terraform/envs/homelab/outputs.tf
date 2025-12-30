@@ -20,3 +20,7 @@ output "vm_nodes" {
   description = "VM nodes"
   value       = module.infra.nodes
 }
+
+output "module_garage_output" {
+  value = try(module.garage.garage_endpoint, null)
+}

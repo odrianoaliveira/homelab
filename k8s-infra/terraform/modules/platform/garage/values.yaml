@@ -9,14 +9,28 @@ garage:
 persistence:
   enabled: true
   meta:
-    size: 100Mi
-    hostPath: /mnt/disks/garage/meta
+    size: 500Mi
+    storageClass: "garage-topolvm"
   data:
     size: 5Gi
-    hostPath: /mnt/disks/garage/data
+    storageClass: "garage-topolvm"
 
 deployment:
   replicaCount: 1  
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3900
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: 3900
+    initialDelaySeconds: 15
+    periodSeconds: 5
+    timeoutSeconds: 5
 
 resources:
   requests:
@@ -24,8 +38,7 @@ resources:
     cpu: "100m"
   limits:
     memory: "1024Mi"
-    cpu: "100m"
+    cpu: "500m"
     
 
-# TODO liveness and readiness probes
 # TODO enable prometheus metrics

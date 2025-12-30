@@ -7,11 +7,6 @@ locals {
       disks = [
         {
           device = "/dev/sdb"
-          partitions = [
-            {
-              mountpoint = "/var/mnt/minio"
-            }
-          ]
         }
       ]
     }
@@ -46,7 +41,6 @@ data "talos_machine_configuration" "this" {
     local.disk_patch,
     local.network_patch
   ])
-
 }
 
 resource "talos_machine_configuration_apply" "controlplane" {
@@ -100,7 +94,21 @@ resource "talos_cluster_kubeconfig" "this" {
 }
 
 resource "local_sensitive_file" "kubeconfig" {
-  content         = talos_cluster_kubeconfig.this["talos-01"].kubeconfig_raw
+  content         = one(values(talos_cluster_kubeconfig.this)).kubeconfig_raw
   filename        = pathexpand("~/.kube/config")
   file_permission = "0600"
+}
+
+resource "kubernetes_manifest" "node_lvm_bootstrap" {
+  depends_on = [local_sensitive_file.kubeconfig]
+
+  manifest = yamldecode(
+    file("${path.module}/lvm-bootstrap/daemonset.yaml")
+  )
+
+  lifecycle {
+    ignore_changes = [
+      object.metadata.annotations
+    ]
+  }
 }

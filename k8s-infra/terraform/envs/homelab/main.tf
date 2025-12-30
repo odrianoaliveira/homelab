@@ -34,9 +34,10 @@ module "infra" {
 }
 
 module "cluster" {
-  depends_on   = [module.infra]
-  source       = "../../modules/cluster-talos"
-  cluster_name = "homelab"
+  depends_on        = [module.infra]
+  source            = "../../modules/cluster-talos"
+  cluster_name      = "homelab"
+  garage_mount_path = "/var/mnt/garage"
 
   nodes = {
     "talos-01" = {
@@ -54,9 +55,17 @@ module "cluster" {
   }
 }
 
-module "garage" {
-  depends_on = [module.cluster]
-  source     = "../../modules/platform/garage"
 
-  nodes = ["talos-01", "talos-02", "talos-03"]
+# Garage depends upon the cluster being up.
+# Since it requires PV with node affinity to worker nodes.
+# To list all talos nodes:
+# kubectl get nodes --selector='!node-role.kubernetes.io/control-plane' -o wide
+#
+module "garage" {
+  depends_on   = [module.cluster]
+  source       = "../../modules/platform/garage"
+  worker_nodes = ["talos-l9f-oxd", "talos-y14-zq1"] # set the worker nodes hostnames here, details above
+  # After set them, run `terraform apply -var="deploy_garage=true"`
+  # 
+  for_each = var.deploy_garage ? { enabled = true } : {}
 }

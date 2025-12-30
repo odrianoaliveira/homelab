@@ -11,7 +11,6 @@ output "kubeconfig" {
   sensitive   = true
 }
 
-
 output "endpoint" {
   description = "Kubernetes cluster API endpoint"
   value       = local.cluster_endpoint
