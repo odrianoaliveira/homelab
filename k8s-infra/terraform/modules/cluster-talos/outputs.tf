@@ -7,10 +7,9 @@ output "talosconfig" {
 
 output "kubeconfig" {
   description = "Kubernetes cluster kubeconfig..."
-  value       = talos_cluster_kubeconfig.this["talos-01"].kubeconfig_raw
+  value       = one(values(talos_cluster_kubeconfig.this)).kubeconfig_raw
   sensitive   = true
 }
-
 
 output "endpoint" {
   description = "Kubernetes cluster API endpoint"

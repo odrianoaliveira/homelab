@@ -53,3 +53,8 @@ module "cluster" {
     }
   }
 }
+
+module "cert_manager" {
+  depends_on = [module.cluster]
+  source     = "../../modules/platform/cert-manager"
+}
