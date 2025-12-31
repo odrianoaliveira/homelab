@@ -111,6 +111,22 @@ graph TD
 ### Terraform
 
 - Even though modules can depend on each other, some providers like Kubernetes need the cluster to be fully operational before its usage. For instance, the Kubernetes provider cannot be evaluated until the kubeconfig is available.
+  - To mitigate this, I executed terraform apply in two stages: first to provision the cluster, then to continue with the modules that depend on it.
+  - Ex.: `terraform apply -target=module.cluster` followed by `terraform apply`.
+- As I want to persist the terraform state, I was thinking about using MinIO as a backend. However, I realized that the MinIO maintainers decided to stop providing support for docker images.
+  - As an alternative, I opted to use [Garage](https://garagehq.deuxfleurs.fr/), as an S3-compatible object storage solution that can be easily deployed within the Kubernetes via the Helm chart.
+  
+### Talos 
+
+- Talos OS is immutabe, that means we should not try to ssh into the nodes to make changes. Instead, we should use Talosctl.
+- As I decided to use TopoLVM for storage management, I had to create a Volume Group on each Talos node using local disks.
+  - To achieve this, I created a Daemonset that runs a container with required tools installed to create a Volume Group. Since it is a Daemonset, it runs on all nodes, ensuring that the Volume Group is created on each one.
+
+### Kubernetes
+
+- Manage local persistent volume can be challenging, especially when dealing with multiple nodes, ensuring data persistence to prevent data loss, and handling volume lifecycle.
+  - Using TopoLVM simplifies this by providing dynamic volume provisioning and management capabilities.
+
 
 ## 🔮 Future Plans
 - Experiment with GPU passthrough for AI workloads.

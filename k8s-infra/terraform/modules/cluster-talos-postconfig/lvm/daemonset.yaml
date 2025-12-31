@@ -36,7 +36,7 @@ spec:
               fi
 
               SENTINEL="/state/.done"
-              DISK="/dev/sdb1"
+              DISK="/dev/sdb"
               VG="vg_garage"
 
               # Run-once guard
