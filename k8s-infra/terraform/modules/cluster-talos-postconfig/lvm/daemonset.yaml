@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-lvm-bootstrap
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: node-lvm-bootstrap
+  template:
+    metadata:
+      labels:
+        app: node-lvm-bootstrap
+    spec:
+      hostPID: true
+      tolerations:
+        - operator: Exists
+      containers:
+        - name: lvm-bootstrap
+          image: docker.io/library/alpine:3.20
+          securityContext:
+            privileged: true
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+
+              # Tools required: lvm2 (pv/vg) + util-linux (wipefs)
+              apk add --no-cache lvm2 util-linux >/dev/null
+
+              # Skip nodes without the extra disk
+              if [ ! -b "/dev/sdb" ]; then
+                echo "/dev/sdb not present on this node, skipping"
+                sleep infinity
+              fi
+
+              SENTINEL="/state/.done"
+              DISK="/dev/sdb"
+              VG="vg_garage"
+
+              # Run-once guard
+              if [ -f "${SENTINEL}" ]; then
+                echo "LVM already initialized on this node"
+                sleep infinity
+              fi
+
+              # Safety guard
+              if [ ! -b "${DISK}" ]; then
+                echo "Expected ${DISK} to exist; aborting"
+                exit 1
+              fi
+
+              echo "Bootstrapping LVM (linear) on node: disk=${DISK}, vg=${VG}"
+
+              # Create PV if missing (wipe signatures once, non-interactive)
+              if ! pvs --noheadings -o pv_name | grep -qw "${DISK}"; then
+                echo "Preparing ${DISK} for LVM"
+                wipefs -a "${DISK}"
+                pvcreate -ff -y "${DISK}"
+              else
+                echo "PV already exists on ${DISK}"
+              fi
+
+              # Create VG if missing
+              if ! vgs --noheadings -o vg_name | grep -qw "${VG}"; then
+                echo "Creating VG ${VG}"
+                vgcreate "${VG}" "${DISK}"
+              else
+                echo "VG ${VG} already exists"
+              fi
+
+              mkdir -p "$(dirname ${SENTINEL})"
+              touch "${SENTINEL}"
+
+              echo "LVM bootstrap (linear) completed successfully"
+              sleep infinity
+          volumeMounts:
+            - name: dev
+              mountPath: /dev
+            - name: lvm-state
+              mountPath: /state
+      volumes:
+        - name: dev
+          hostPath:
+            path: /dev
+        - name: lvm-state
+          hostPath:
+            path: /var/lib/lvm-bootstrap
+            type: DirectoryOrCreate

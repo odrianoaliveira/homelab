@@ -58,3 +58,17 @@ module "cert_manager" {
   depends_on = [module.cluster]
   source     = "../../modules/platform/cert-manager"
 }
+
+module "cluster_postconfig" {
+  depends_on = [module.cluster]
+  source     = "../../modules/cluster-talos-postconfig"
+}
+
+module "storage" {
+  depends_on = [
+    module.cluster_postconfig,
+    module.cert_manager
+  ]
+
+  source = "../../modules/platform/storage"
+}
