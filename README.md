@@ -108,6 +108,10 @@ graph TD
 
 ## 🎯 Lessons Learned
 
+### Terraform
+
+- Even though modules can depend on each other, some providers like Kubernetes need the cluster to be fully operational before its usage. For instance, the Kubernetes provider cannot be evaluated until the kubeconfig is available.
+
 ## 🔮 Future Plans
 - Experiment with GPU passthrough for AI workloads.
 - Explore MLOps tools (e.g., Kubeflow, Argo Workflows).
