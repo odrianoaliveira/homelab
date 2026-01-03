@@ -36,16 +36,16 @@ The platform is responsible for:
 ## Roadmap
 
 ### Phase 1: Foundations
-- [x] **Proxmox Dev Environment**: Virtualized Talos Kubernetes nodes on Arch Linux, using a **Ryzen 9 Mini PC (32GB RAM, 2TB SSD)** for flexibility and isolation.
-- [ ] **Bare-Metal Prod Environment**: Talos Kubernetes on **HP EliteDesk (Core i7-7700, 32GB RAM, 512GB SSD)** and **N95 Mini PC (16GB RAM, 512GB SSD)** for production-grade workloads.
+- [x] **Proxmox Dev Environment**: Virtualized Talos Kubernetes nodes on Arch Linux, using a Ryzen 9 Mini PC (32GB RAM, 2TB SSD) for flexibility and isolation.
+- [ ] **Bare-Metal Prod Environment**: Talos Kubernetes on HP EliteDesk (Core i7-7700, 32GB RAM, 512GB SSD) and N95 Mini PC (16GB RAM, 512GB SSD) for production-grade workloads.
 - [x] **Hardware Allocation**:
-  - HP EliteDesk as **Control Plane + Worker** (due to homelab constraints).
-  - N95 Mini PC as **Dedicated Worker** for redundancy and scalability.
+  - HP EliteDesk as Control Plane + Worker (due to homelab constraints).
+  - N95 Mini PC as Dedicated Worker for redundancy and scalability.
 
 ### Phase 2: CI/CD and GitOps
 - [ ] **CI Pipeline in Dev**: Set up GitHub Actions/GitLab CI to automate builds, tests, and staging.
 - [ ] **GitOps with Flux CD**:
-  - Bind Flux CD in **prod** to the `main` branch for automated, auditable deployments.
+  - Bind Flux CD in prod to the `main` branch for automated, auditable deployments.
   - Use approval gates: main -|automatically|-> dev -|approval|-> prod.
 - [ ] **Promotion Workflow**: Document the process for promoting changes from dev to prod via GitOps.
 
@@ -113,7 +113,7 @@ graph TD
 
 ## 🌐 Environments
 
-| Environment | Purpose                        | Hardware/Platform                   | Specifications                                                                                                              | Role in Platform Engineering Showcase                                                                      |
+| Environment | Purpose                        | Hardware/Platform                   | Specifications                                                                                                              | Role in Platform Service                                                                                   |
 | ----------- | ------------------------------ | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | **Dev**     | Testing, CI/CD, staging        | Proxmox (Virtualized on Arch Linux) | -**Mini PC (Ryzen 9)**: AMD Ryzen 9, 32GB RAM, 2TB M.2 SSD<br>- Host: Arch Linux<br>- VMs: Talos Kubernetes nodes           | - Safe space for experimentation and validation.<br>- Simulates a "staging" environment for product teams. |
 | **Prod**    | Hosting "production" workloads | Bare-Metal Talos Kubernetes         | - **HP EliteDesk 800 G3**: Core i7-7700, 32GB RAM, 512GB M.2 SSD<br>- **Mini PC (N95)**: Intel N95, 16GB RAM, 512GB M.2 SSD | - Mimics a real production environment.<br>- Demonstrates IaC, GitOps, and observability in action.        |
