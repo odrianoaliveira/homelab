@@ -70,7 +70,10 @@ The platform is responsible for:
   - Audit logs and access controls for both environments.
 
 ### Phase 5: Platform Abstractions (Future)
-- [ ] **Developer Self-Service**: Create service templates so "product teams" can deploy apps without writing Kubernetes YAML.
+- [ ] **Developer Self-Service**:
+  - Create service templates so "product teams" can deploy apps without writing Kubernetes YAML.
+    - Example: Developers deploy Nextcloud by submitting a PR to a service template repo—no need to author K8s YAML.
+  - Platform provides CLI commands like `platform deploy` to handle builds, rollouts, and observability setup.
 - [ ] **Golden Paths**: Standardize how apps are deployed, exposed, and monitored.
 
 ## 🏗️ Architecture
