@@ -158,11 +158,17 @@ graph TD
 - Manage local persistent volume can be challenging, especially when dealing with multiple nodes, ensuring data persistence to prevent data loss, and handling volume lifecycle.
   - Using TopoLVM simplifies this by providing dynamic volume provisioning and management capabilities.
 
-
 ## 🔮 Future Plans
-- Experiment with GPU passthrough for AI workloads.
-- Explore MLOps tools (e.g., Kubeflow, Argo Workflows).
-- Add edge-computing nodes for IoT simulations.
+1. GPU Passthrough:
+   - *Goal:* Enable AI/ML workloads on Kubernetes.
+   - *Why:* Prepare the platform for the AI boom and demonstrate multi-workload support.
+2. MLOps Tools:
+   - *Goal:* Evaluate Kubeflow and Argo Workflows for standardized ML pipelines.
+   - *Why:* Align with industry trends and expand platform capabilities.
+3. Edge Computing:
+   - *Goal:* Simulate IoT devices using K3s on Raspberry Pi.
+   - *Why:* Showcase scalability and edge-use-case support.
+  
 
 ## 📫 Connect
 - [LinkedIn](https://www.linkedin.com/in/adriano-oliveira/)
