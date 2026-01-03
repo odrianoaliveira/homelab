@@ -35,38 +35,43 @@ The platform is responsible for:
 
 ## Roadmap
 
-### Platform Foundations
+### Phase 1: Foundations
+- [x] **Proxmox Dev Environment**: Virtualized Talos Kubernetes nodes on Arch Linux, using a **Ryzen 9 Mini PC (32GB RAM, 2TB SSD)** for flexibility and isolation.
+- [ ] **Bare-Metal Prod Environment**: Talos Kubernetes on **HP EliteDesk (Core i7-7700, 32GB RAM, 512GB SSD)** and **N95 Mini PC (16GB RAM, 512GB SSD)** for production-grade workloads.
+- [x] **Hardware Allocation**:
+  - HP EliteDesk as **Control Plane + Worker** (due to homelab constraints).
+  - N95 Mini PC as **Dedicated Worker** for redundancy and scalability.
 
-- [x] Set up Proxmox virtualization environment.
-- [x] Deploy Talos OS on Proxmox VMs.
-- [x] Provision Kubernetes cluster using Talos and Terraform.
-  
-### GitOps Control Plane (Flux CD)
+### Phase 2: CI/CD and GitOps
+- [ ] **CI Pipeline in Dev**: Set up GitHub Actions/GitLab CI to automate builds, tests, and staging.
+- [ ] **GitOps with Flux CD**:
+  - Bind Flux CD in **prod** to the `main` branch for automated, auditable deployments.
+  - Use approval gates: main -|automatically|-> dev -|approval|-> prod.
+- [ ] **Promotion Workflow**: Document the process for promoting changes from dev to prod via GitOps.
 
-- [ ] Establish GitOps as the platform control plane using Flux CD.
-- [ ] Bind Flux reconciliation to a specific Git repository and branch.
-- [ ] Treat Flux as a first-class, versioned platform dependency.
+### Phase 3: Observability and Guardrails
+- [ ] **Unified Observability**:
+  - Deploy Prometheus, Loki, and Grafana to monitor both dev and prod environments.
+  - Create dashboards for resource usage, application health, and GitOps sync status.
+- [ ] **Platform Guardrails**:
+  - Define namespace quotas, Pod Security Standards, and network policies in both environments.
+  - Use policy-as-code enforcement.
+- [ ] **Alerting**: Set up alerts for critical events.
 
-### Observability Baseline
+### Phase 4: Operational Readiness
+- [ ] **Backup and Disaster Recovery**:
+  - Implement backup strategies for Kubernetes resources and persistent volumes.
+  - Test restore procedures in both environments.
+- [ ] **Day 2 Operations**:
+  - Document upgrade procedures for Talos, Kubernetes, and Flux CD.
+  - Simulate failure scenarios and recovery steps.
+- [ ] **Immutability and Security**:
+  - Enforce Talos OS updates and Kubernetes upgrades via GitOps.
+  - Audit logs and access controls for both environments.
 
-- [ ] Deploy Prometheus as the platform metrics backend.
-- [ ] Deploy Loki for centralized log aggregation.
-- [ ] Deploy Grafana with platform-level dashboards.
-- [ ] Define baseline alerting rules and notification channels.
-
-### Platform Guardrails
-
-- [ ] Namespace structure and ownership model.
-- [ ] Resource guardrails (quotas, limits, defaults).
-- [ ] Security guardrails (Pod Security Standards, admission policies).
-- [ ] Network guardrails (namespace isolation, ingress/egress policies).
-- [ ] Policy-as-code enforcement for platform standards.
-
-### Operational Readiness
-
-- [ ] "Day 2" operations documentation (upgrades, recovery, troubleshooting).
-- [ ] Backup and disaster recovery strategy for cluster-critical components.
-- [ ] Deterministic cluster rebuild procedures.
+### Phase 5: Platform Abstractions (Future)
+- [ ] **Developer Self-Service**: Create service templates so "product teams" can deploy apps without writing Kubernetes YAML.
+- [ ] **Golden Paths**: Standardize how apps are deployed, exposed, and monitored.
 
 ## 🏗️ Architecture
 
@@ -105,6 +110,29 @@ graph TD
         H -->|Stores Logs| D
     end
 ```
+
+## 🌐 Environments
+
+| Environment | Purpose                        | Hardware/Platform                   | Specifications                                                                                                              | Role in Platform Engineering Showcase                                                                      |
+| ----------- | ------------------------------ | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Dev**     | Testing, CI/CD, staging        | Proxmox (Virtualized on Arch Linux) | -**Mini PC (Ryzen 9)**: AMD Ryzen 9, 32GB RAM, 2TB M.2 SSD<br>- Host: Arch Linux<br>- VMs: Talos Kubernetes nodes           | - Safe space for experimentation and validation.<br>- Simulates a "staging" environment for product teams. |
+| **Prod**    | Hosting "production" workloads | Bare-Metal Talos Kubernetes         | - **HP EliteDesk 800 G3**: Core i7-7700, 32GB RAM, 512GB M.2 SSD<br>- **Mini PC (N95)**: Intel N95, 16GB RAM, 512GB M.2 SSD | - Mimics a real production environment.<br>- Demonstrates IaC, GitOps, and observability in action.        |
+
+### Why This Setup?
+- **Dev (Proxmox VE + Talos):**
+  - *Flexibility*: Quickly spin up/destroy VMs to test Terraform changes or GitOps configurations.
+  - *Isolation*: Prevents accidental disruption of production workloads.
+  - *Cost-Effective*: Uses my existing Arch Linux desktop resources.
+
+- **Prod (Bare-Metal Talos):**
+  - *Performance*: No virtualization overhead for production workloads.
+  - *Realism*: Closer to enterprise environments, where bare-metal or cloud VMs are standard.
+  - *Immutability*: Talos OS enforces security and consistency, aligning with platform engineering best practices.
+
+- **Hardware Allocation:**
+  - HP EliteDesk as **Control Plane + Worker**: Balances cost and performance for a homelab. Note: Control plane and worker nodes are on the same machine due to hardware constraints.
+  - N95 Mini PC as **Dedicated Worker**: Adds redundancy and scalability for future workloads.
+
 
 ## 🎯 Lessons Learned
 
