@@ -37,7 +37,7 @@ The platform is responsible for:
 
 ### Phase 1: Foundations
 - [x] **Proxmox Dev Environment**: Virtualized Talos Kubernetes nodes on Arch Linux, using a Ryzen 9 Mini PC (32GB RAM, 2TB SSD) for flexibility and isolation.
-- [ ] **Bare-Metal Prod Environment**: Talos Kubernetes on HP EliteDesk (Core i7-7700, 32GB RAM, 512GB SSD) and N95 Mini PC (16GB RAM, 512GB SSD) for production-grade workloads.
+- [x] **Bare-Metal Prod Environment**: Talos Kubernetes on HP EliteDesk (Core i7-7700, 32GB RAM, 512GB SSD) and N95 Mini PC (16GB RAM, 512GB SSD) for production-grade workloads.
 - [x] **Hardware Allocation**:
   - HP EliteDesk as Control Plane + Worker (due to homelab constraints).
   - N95 Mini PC as Dedicated Worker for redundancy and scalability.
