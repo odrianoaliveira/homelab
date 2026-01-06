@@ -2,17 +2,7 @@
 locals {
   cluster_endpoint = "https://${var.nodes["talos-01"].ip}:6443"
 
-  disk_patch = yamlencode({
-    machine = {
-      disks = [
-        {
-          device = "/dev/sdb"
-        }
-      ]
-    }
-  })
-
-  network_patch = yamlencode({
+  network_patch = var.enable_network_patch ? yamlencode({
     machine = {
       network = {
         interfaces = [
@@ -24,7 +14,7 @@ locals {
         nameservers = ["1.1.1.1", "1.0.0.1"]
       }
     }
-  })
+  }) : null
 }
 
 resource "talos_machine_secrets" "this" {}
@@ -38,7 +28,19 @@ data "talos_machine_configuration" "this" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
 
   config_patches = compact([
-    local.disk_patch,
+    yamlencode({
+      machine = {
+        install = {
+          disk = each.value.install_disk
+          wipe = true
+        }
+      }
+    }),
+    yamlencode({
+      machine = {
+        disks = each.value.storage_disks
+      }
+    }),
     local.network_patch
   ])
 }
