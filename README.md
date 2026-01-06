@@ -152,6 +152,8 @@ graph TD
 - Talos OS is immutabe, that means we should not try to ssh into the nodes to make changes. Instead, we should use Talosctl.
 - As I decided to use TopoLVM for storage management, I had to create a Volume Group on each Talos node using local disks.
   - To achieve this, I created a Daemonset that runs a container with required tools installed to create a Volume Group. Since it is a Daemonset, it runs on all nodes, ensuring that the Volume Group is created on each one.
+- Bare-Metal installation is tricky since I had to boot the machines via USB at the same time, it would be better next time to evaluate if it worths to boot the machines via PXE to roll out the same talos image to all machines at the same time.
+- During the talos apply configuration I had to provide where to install the OS, on the bare-metal this is not standardized. For instance, on my control plane the fisrt device is /dev/nvme0n1 but on the worker it was /dev/sdb.
 
 ### Kubernetes
 

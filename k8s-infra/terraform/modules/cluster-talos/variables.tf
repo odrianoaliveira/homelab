@@ -12,8 +12,10 @@ variable "network" {
 
 variable "nodes" {
   type = map(object({
-    ip   = string
-    role = string
+    ip            = string
+    role          = string
+    install_disk  = string
+    storage_disks = list(string)
   }))
 
   validation {
@@ -29,4 +31,29 @@ variable "nodes" {
 
 variable "cluster_name" {
   type = string
+}
+
+variable "enable_disk_patch" {
+  description = "Enable disk patch for VMs (not needed for bare metal)"
+  type        = bool
+  default     = true
+}
+
+variable "enable_network_patch" {
+  description = "Enable network patch for specific interface configuration"
+  type        = bool
+  default     = true
+}
+
+variable "install_disk" {
+  description = "Where to install the Talos OS disk (e.g., /dev/nvme0n1, /dev/sda)"
+  type        = string
+}
+
+variable "extra_disks" {
+  description = "Additional disks to configure on the machine"
+  type = list(object({
+    device = string
+    wipe   = bool
+  }))
 }
