@@ -3,11 +3,8 @@ module "cluster" {
   source       = "../../modules/cluster-talos"
   cluster_name = "prod-homelab"
 
-  enable_disk_patch    = false
-  enable_network_patch = false
-
-  install_disk = "/dev/nvme0n1"
-  extra_disks  = []
+  enable_network_patch           = false
+  enable_workers_on_controlplane = true
 
   nodes = {
     "talos-01" = {

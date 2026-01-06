@@ -33,27 +33,15 @@ variable "cluster_name" {
   type = string
 }
 
-variable "enable_disk_patch" {
-  description = "Enable disk patch for VMs (not needed for bare metal)"
-  type        = bool
-  default     = true
-}
-
 variable "enable_network_patch" {
   description = "Enable network patch for specific interface configuration"
   type        = bool
   default     = true
 }
 
-variable "install_disk" {
-  description = "Where to install the Talos OS disk (e.g., /dev/nvme0n1, /dev/sda)"
-  type        = string
+variable "enable_workers_on_controlplane" {
+  description = "Enable workers on controlplane node"
+  type        = bool
+  default     = false
 }
 
-variable "extra_disks" {
-  description = "Additional disks to configure on the machine"
-  type = list(object({
-    device = string
-    wipe   = bool
-  }))
-}
