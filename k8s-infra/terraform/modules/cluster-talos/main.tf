@@ -2,6 +2,14 @@
 locals {
   cluster_endpoint = "https://${var.nodes["talos-01"].ip}:6443"
 
+  enable_workers_controlplane_patch = var.enable_workers_on_controlplane != true ? null : yamlencode(
+    {
+      cluster = {
+        allowSchedulingOnControlPlanes : true
+      }
+    }
+  )
+
   network_patch = var.enable_network_patch ? yamlencode({
     machine = {
       network = {
@@ -41,6 +49,7 @@ data "talos_machine_configuration" "this" {
         disks = each.value.storage_disks
       }
     }),
+    local.enable_workers_controlplane_patch,
     local.network_patch
   ])
 }
