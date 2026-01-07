@@ -27,6 +27,17 @@ module "cert_manager" {
   source     = "../../modules/platform/cert-manager"
 }
 
+# export TF_VAR_github_token="***"
+# terraform apply
+module "gitops" {
+  depends_on = [module.cluster]
+  source     = "../../modules/gitops"
+
+  github_org        = "odrianoaliveira"
+  github_repository = "homelab"
+  github_token      = var.github_token
+}
+
 #module "cluster_postconfig" {
 #  depends_on = [module.cluster]
 #  source     = "../../modules/cluster-talos-postconfig"

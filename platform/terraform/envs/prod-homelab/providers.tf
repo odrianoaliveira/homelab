@@ -14,6 +14,18 @@ terraform {
       source  = "hashicorp/helm"
       version = "3.1.1"
     }
+    flux = {
+      source  = "fluxcd/flux"
+      version = "~1.7"
+    }
+    github = {
+      source  = "integrations/github"
+      version = "~6.9"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~4.1"
+    }
   }
 }
 
@@ -47,4 +59,25 @@ provider "helm" {
 
     load_config_file = false
   }
+}
+
+provider "flux" {
+  kubernetes = {
+    host                   = local.host
+    client_certificate     = local.client_certificate
+    client_key             = local.client_key
+    cluster_ca_certificate = local.cluster_ca_certificate
+  }
+  git = {
+    url = "ssh://git@github.com/${var.github_org}/${var.github_repository}.git"
+    ssh = {
+      username    = "git"
+      private_key = tls_private_key.flux.private_key_pem
+    }
+  }
+}
+
+provider "github" {
+  owner = var.github_org
+  token = var.github_token
 }
