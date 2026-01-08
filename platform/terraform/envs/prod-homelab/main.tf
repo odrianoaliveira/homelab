@@ -1,3 +1,6 @@
+locals {
+  flux_path = "platform/fluxcd/prod"
+}
 
 module "cluster" {
   source       = "../../modules/cluster-talos"
@@ -43,6 +46,7 @@ module "gitops" {
   github_token      = var.github_token
   flux_private_key  = tls_private_key.flux.private_key_pem
   flux_public_key   = tls_private_key.flux.public_key_openssh
+  flux_path         = local.flux_path
 }
 
 #module "cluster_postconfig" {
