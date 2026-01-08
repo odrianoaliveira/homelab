@@ -1,3 +1,6 @@
+locals {
+  flux_path = "platform/fluxcd/prod"
+}
 
 module "cluster" {
   source       = "../../modules/cluster-talos"
@@ -25,6 +28,25 @@ module "cluster" {
 module "cert_manager" {
   depends_on = [module.cluster]
   source     = "../../modules/platform/cert-manager"
+}
+
+resource "tls_private_key" "flux" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P256"
+}
+
+# export TF_VAR_github_token="***"
+# terraform apply
+module "gitops" {
+  depends_on = [module.cluster]
+  source     = "../../modules/gitops"
+
+  github_org        = "odrianoaliveira"
+  github_repository = "homelab"
+  github_token      = var.github_token
+  flux_private_key  = tls_private_key.flux.private_key_pem
+  flux_public_key   = tls_private_key.flux.public_key_openssh
+  flux_path         = local.flux_path
 }
 
 #module "cluster_postconfig" {
