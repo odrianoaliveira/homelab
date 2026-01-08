@@ -27,6 +27,11 @@ module "cert_manager" {
   source     = "../../modules/platform/cert-manager"
 }
 
+resource "tls_private_key" "flux" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P256"
+}
+
 # export TF_VAR_github_token="***"
 # terraform apply
 module "gitops" {
@@ -36,6 +41,8 @@ module "gitops" {
   github_org        = "odrianoaliveira"
   github_repository = "homelab"
   github_token      = var.github_token
+  flux_private_key  = tls_private_key.flux.private_key_pem
+  flux_public_key   = tls_private_key.flux.public_key_openssh
 }
 
 #module "cluster_postconfig" {

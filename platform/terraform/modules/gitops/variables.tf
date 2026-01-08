@@ -16,3 +16,16 @@ variable "github_repository" {
   type        = string
   default     = ""
 }
+
+variable "flux_public_key" {
+  description = "Flux SSH public key"
+  type        = string
+  default     = ""
+}
+
+variable "flux_private_key" {
+  description = "Flux SSH private key"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
