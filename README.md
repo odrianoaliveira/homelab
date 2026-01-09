@@ -172,7 +172,6 @@ graph TD
 ### GitOps with Flux CD
 - Flux CD requires proper configuration of the Git repository structure to ensure smooth synchronization and deployment.
   - I had to organize my Git repository to separate environment-specific configurations (dev and prod) to avoid conflicts and ensure clarity.
-- Setting up Flux CD with Talos requires careful attention to the bootstrap process, ensuring that the initial configuration is correctly applied to the cluster.
 - Flux CD's terraform provider is simple to use, but I had to ensure that the path to the manifests is correctly set according to the environment (dev or prod).
 
 ## 🔮 Future Plans
