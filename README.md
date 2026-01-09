@@ -44,9 +44,7 @@ The platform is responsible for:
 
 ### Phase 2: CI/CD and GitOps
 - [ ] **CI Pipeline in Dev**: Set up GitHub Actions/GitLab CI to automate builds, tests, and staging.
-- [ ] **GitOps with Flux CD**:
-  - Bind Flux CD in prod to the `main` branch for automated, auditable deployments.
-  - Use approval gates: main -|automatically|-> dev -|approval|-> prod.
+- [ ] **GitOps with Flux CD**: Bind Flux CD in prod to the `main` branch for automated, auditable deployments.
 - [ ] **Promotion Workflow**: Document the process for promoting changes from dev to prod via GitOps.
 
 ### Phase 3: Observability and Guardrails
