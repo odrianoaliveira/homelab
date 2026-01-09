@@ -159,6 +159,21 @@ graph TD
 
 - Manage local persistent volume can be challenging, especially when dealing with multiple nodes, ensuring data persistence to prevent data loss, and handling volume lifecycle.
   - Using TopoLVM simplifies this by providing dynamic volume provisioning and management capabilities.
+- I had to use kubectl config to manage multiple clusters (dev and prod).
+  - I created two contexts inside my ~/.kube/config file, one for each environment, and switched between them using `kubectl config use-context <context-name>`.
+  - `kubectl config get-contexts` to list all available contexts.
+  - ```shell
+        k config get-contexts
+       CURRENT   NAME                 CLUSTER        AUTHINFO             NAMESPACE
+       *         admin@dev-homelab    dev-homelab    admin@dev-homelab    default
+                 admin@prod-homelab   prod-homelab   admin@prod-homelab   default
+    ``` 
+
+### GitOps with Flux CD
+- Flux CD requires proper configuration of the Git repository structure to ensure smooth synchronization and deployment.
+  - I had to organize my Git repository to separate environment-specific configurations (dev and prod) to avoid conflicts and ensure clarity.
+- Setting up Flux CD with Talos requires careful attention to the bootstrap process, ensuring that the initial configuration is correctly applied to the cluster.
+- Flux CD's terraform provider is simple to use, but I had to ensure that the path to the manifests is correctly set according to the environment (dev or prod).
 
 ## 🔮 Future Plans
 1. GPU Passthrough:
