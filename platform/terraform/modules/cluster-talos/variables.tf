@@ -12,10 +12,12 @@ variable "network" {
 
 variable "nodes" {
   type = map(object({
-    ip            = string
-    role          = string
-    install_disk  = string
-    storage_disks = list(string)
+    ip           = string
+    role         = string
+    install_disk = string
+    storage_disks = list(object({
+      device = string
+    }))
   }))
 
   validation {

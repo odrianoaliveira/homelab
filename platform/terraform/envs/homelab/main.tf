@@ -1,3 +1,12 @@
+locals {
+  storage_disks = [
+    {
+      device = "/dev/sdb"
+    }
+  ]
+
+  install_disk = "/dev/sda"
+}
 
 module "infra" {
   source = "../../modules/proxmox"
@@ -40,16 +49,22 @@ module "cluster" {
 
   nodes = {
     "talos-01" = {
-      ip   = module.infra.nodes["talos-01"].ip
-      role = "controlplane"
+      ip            = module.infra.nodes["talos-01"].ip
+      role          = "controlplane"
+      install_disk  = local.install_disk
+      storage_disks = local.storage_disks
     }
     "talos-02" = {
-      ip   = module.infra.nodes["talos-02"].ip
-      role = "worker"
+      ip            = module.infra.nodes["talos-02"].ip
+      role          = "worker"
+      install_disk  = local.install_disk
+      storage_disks = local.storage_disks
     }
     "talos-03" = {
-      ip   = module.infra.nodes["talos-03"].ip
-      role = "worker"
+      ip            = module.infra.nodes["talos-03"].ip
+      role          = "worker"
+      install_disk  = local.install_disk
+      storage_disks = local.storage_disks
     }
   }
 }
