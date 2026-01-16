@@ -1,0 +1,90 @@
+name: CI Pipeline
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "platform/terraform/**"
+      - ".github/workflows/ci.yaml"
+
+env:
+  TF_VERSION: "1.14.3"
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [ "homelab", "prod-homelab" ]
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+    
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v6
+    
+    - name: Terraform Format
+      id: fmt
+      working-directory: platform/terraform/envs/${{ matrix.environment }}
+      run: terraform fmt -check
+
+    - name: Terraform Init
+      id: init
+      working-directory: platform/terraform/envs/${{ matrix.environment }}
+      run: terraform init
+
+    - name: Terraform Validate
+      id: validate
+      working-directory: platform/terraform/envs/${{ matrix.environment }}
+      run: |
+        terraform validate
+
+    - name: Terraform Lint
+      id: lint
+      working-directory: platform/terraform/envs/${{ matrix.environment }}
+      run: tflint --init && tflint
+      continue-on-error: true
+    
+    - name: Terraform Plan
+      id: plan
+      if: false #disabled until the backend is provided
+      working-directory: platform/terraform/envs/${{ matrix.environment }}
+      env:
+        TF_VAR_proxmox_api_url: ${{ secrets.PROXMOX_API_URL }}
+        TF_VAR_proxmox_token_id: ${{ secrets.PROXMOX_API_USER }}
+        TF_VAR_proxmox_token_secret: ${{ secrets.PROXMOX_API_TOKEN }} 
+        TF_VAR_GITHUB_ORG: ${{ github.repository_owner }}
+        TF_VAR_GITHUB_REPOSITORY: ${{ github.repository }}
+        TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
+      run: terraform plan -no-color -out=tfplan > plan.txt 2>&1 && terraform show -no-color tfplan >> plan.txt
+      continue-on-error: true
+    
+    - name: Comment PR
+      uses: actions/github-script@v6
+      if: false #disabled until the backend is provided
+      # if: false && github.event_name == 'pull_request'
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const planPath = 'platform/terraform/envs/${{ matrix.environment }}/plan.txt';
+          const planOutput = fs.existsSync(planPath) ? fs.readFileSync(planPath, 'utf8') : 'No plan output available';
+          const output = `#### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
+          #### Terraform Lint 🚨 \`${{ steps.lint.outcome }}\`
+          #### Terraform Plan 🚀 \`${{ steps.plan.outcome }}\` [${{ matrix.environment }}]
+          <details><summary>Show Plan</summary>
+          
+          \`\`\`
+          ${planOutput}
+          \`\`\`
+          </details>`;
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
