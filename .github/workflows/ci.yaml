@@ -51,6 +51,7 @@ jobs:
     
     - name: Terraform Plan
       id: plan
+      if: false #disabled until the backend is provided
       working-directory: platform/terraform/envs/${{ matrix.environment }}
       env:
         TF_VAR_proxmox_api_url: ${{ secrets.PROXMOX_API_URL }}
