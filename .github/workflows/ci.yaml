@@ -32,7 +32,6 @@ jobs:
       id: validate
       working-directory: platform/terraform/envs/${{ matrix.environment }}
       run: |
-        terraform init -backend=false
         terraform validate
     - name: Terraform Init
       id: init
@@ -51,7 +50,8 @@ jobs:
         TF_VAR_proxmox_token_id: ${{ secrets.PROXMOX_API_USER }}
         TF_VAR_proxmox_token_secret: ${{ secrets.PROXMOX_API_TOKEN }} 
         TF_VAR_GITHUB_ORG: ${{ github.repository_owner }}
-        TF_VAR_GITHUB_REPOSITORY: ${{ github.repository.name }}
+        TF_VAR_GITHUB_REPOSITORY: ${{ github.repository }}
+        TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
       run: terraform plan -no-color -out=tfplan > plan.txt 2>&1 && terraform show -no-color tfplan >> plan.txt
       continue-on-error: true
     - name: Comment PR
@@ -61,7 +61,8 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const fs = require('fs');
-          const planOutput = fs.readFileSync('platform/terraform/envs/${{ matrix.environment }}/plan.txt', 'utf8');
+          const planPath = 'platform/terraform/envs/${{ matrix.environment }}/plan.txt';
+          const planOutput = fs.existsSync(planPath) ? fs.readFileSync(planPath, 'utf8') : 'No plan output available';
           const output = `#### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
           #### Terraform Lint 🚨 \`${{ steps.lint.outcome }}\`
           #### Terraform Plan 🚀 \`${{ steps.plan.outcome }}\` [${{ matrix.environment }}]
@@ -76,4 +77,4 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: output
-          })``
+          })
