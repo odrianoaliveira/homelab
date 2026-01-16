@@ -22,6 +22,8 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: ${{ env.TF_VERSION }}
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v6
     - name: Terraform Format
       id: fmt
       working-directory: platform/terraform/envs/${{ matrix.environment }}
@@ -74,4 +76,4 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: output
-          })
+          })``
