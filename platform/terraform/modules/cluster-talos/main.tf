@@ -34,6 +34,20 @@ locals {
       install = {
         image = local.installer_image
       }
+      kubelet = {
+        extraMounts = [
+          {
+            destination = "/var/lib/longhorn"
+            type        = "bind"
+            source      = "/var/lib/longhorn"
+            options = [
+              "bind",
+              "rshared",
+              "rw"
+            ]
+          }
+        ]
+      }
     }
   })
 }
