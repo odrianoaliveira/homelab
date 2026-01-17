@@ -2,6 +2,11 @@
 locals {
   cluster_endpoint = "https://${var.nodes["talos-01"].ip}:6443"
 
+  # Talos factory schematic with iscsi-tools and util-linux-tools extensions required by Longhorn
+  schematic_id    = "613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245"
+  talos_version   = "v1.12.1"
+  installer_image = "factory.talos.dev/installer/${local.schematic_id}:${local.talos_version}"
+
   enable_workers_controlplane_patch = var.enable_workers_on_controlplane != true ? null : yamlencode(
     {
       cluster = {
@@ -23,6 +28,14 @@ locals {
       }
     }
   }) : null
+
+  longhorn_deps = yamlencode({
+    machine = {
+      install = {
+        image = local.installer_image
+      }
+    }
+  })
 }
 
 resource "talos_machine_secrets" "this" {}
@@ -50,7 +63,8 @@ data "talos_machine_configuration" "this" {
       }
     }),
     local.enable_workers_controlplane_patch,
-    local.network_patch
+    local.network_patch,
+    local.longhorn_deps
   ])
 }
 
