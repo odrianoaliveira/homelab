@@ -1,0 +1,27 @@
+---
+- name: Upgrade Raspberry Pi OS
+  hosts: pihole_nodes
+  become: true
+  tasks:
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+    - name: Upgrade packages
+      apt:
+        upgrade: yes
+      register: upgrade_result
+    - name: Remove unnecessary packages
+      apt:
+        autoremove: yes
+        autoclean: yes
+    - name: Reboot the Raspberry Pi if needed
+      reboot:
+        msg: "Rebooting after upgrade"
+        pre_reboot_delay: 10
+        reboot_timeout: 300
+      when: upgrade_result.changed
+    - name: Wait for the system to come back online
+      wait_for_connection:
+        timeout: 300
+      when: upgrade_result.changed
