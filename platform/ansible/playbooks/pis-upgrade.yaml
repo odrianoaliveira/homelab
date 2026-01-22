@@ -1,0 +1,8 @@
+---
+- name: Upgrade Raspberry Pi OS
+  hosts: pihole_nodes
+  become: true
+  tasks:
+    - name: Update apt package index
+      apt:
+        update_cache: yes
