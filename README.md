@@ -139,6 +139,12 @@ graph TD
 
 ## 🎯 Lessons Learned
 
+### Pihole
+- I decided to use Pihole as a DNS server on my local network. It works well to block ads and unwanted content at the network level.
+- Besides, the original plan was to utilize ansible to automate the Pihole bootstrap. However, the installation script porovided by the Pihole maintainers is not easy to automate it. As it requires user interaction during the installation process.
+- Since this is one time job, and I just have two isntances to install, I opted to do it manually.
+- The provided instalation script is very good, and it works well. I just had to follow the instructions.
+
 ### Terraform
 
 - Even though modules can depend on each other, some providers like Kubernetes need the cluster to be fully operational before its usage. For instance, the Kubernetes provider cannot be evaluated until the kubeconfig is available.
