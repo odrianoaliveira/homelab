@@ -1,0 +1,26 @@
+vrrp_instance VI_1 {
+    state {{ keepalived_state }}
+    interface {{ keepalived_interface }}
+    virtual_router_id {{ keepalived_virtual_router_id }}
+    priority {{ keepalived_priority }}
+    advert_int 1
+
+    # Use unicast instead of multicast (required for WiFi)
+    unicast_src_ip {{ ansible_default_ipv4.address }}
+    unicast_peer {
+        {% for host in groups['pihole_nodes'] %}
+        {% if host != inventory_hostname %}
+        {{ hostvars[host]['ansible_default_ipv4']['address'] }}
+        {% endif %}
+        {% endfor %}
+    }
+
+    authentication {
+        auth_type PASS
+        auth_pass {{ keepalived_auth_pass }}
+    }
+    
+    virtual_ipaddress {
+        {{ keepalived_virtual_ip }}
+    }
+}
