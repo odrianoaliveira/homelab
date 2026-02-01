@@ -41,6 +41,7 @@ The platform is responsible for:
 - [x] **Hardware Allocation**:
   - HP EliteDesk as Control Plane + Worker (due to homelab constraints).
   - N95 Mini PC as Dedicated Worker for redundancy and scalability.
+- [x] **DNS server**: Deploy Pi-hole on both environments for network-level ad blocking and DNS management.
 
 ### Phase 2: CI/CD and GitOps
 - [ ] **CI Pipeline in Dev**: Set up GitHub Actions/GitLab CI to automate builds, tests, and staging.
