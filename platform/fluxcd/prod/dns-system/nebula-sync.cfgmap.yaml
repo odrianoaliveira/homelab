@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  CRON: "*/5 * * * *"
+  FULL_SYNC: "true"
+  RUN_GRAVITY: "true"
+kind: ConfigMap
+metadata:
+  name: nebula-sync-cfg
+  namespace: dns-system
