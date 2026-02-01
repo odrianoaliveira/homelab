@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - flux-system
   - longhorn-system
+  - dns-system
