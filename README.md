@@ -139,6 +139,14 @@ graph TD
 
 ## 🎯 Lessons Learned
 
+### Ansible
+- Ansible is a powerful tool for automating configuration management and application deployment.
+- It is agent-less, which means it uses SSH to connect to remote machines, making it easy to set up and use.
+- The playbooks are idempotent, ensuring that running them multiple times will not produce unintended side effects.
+- I can secure sensitive data using Ansible Vault, which encrypts variables and files.
+- I can encrypt sensitive data using a handy ansible commands like `ansible-vault encrypt` and `ansible-vault decrypt`.
+- Besides, Ansible allows to dry-run playbooks using the `--check` flag, which helps to verify changes before applying them.
+
 ### Pihole
 - I decided to use Pihole as a DNS server on my local network. It works well to block ads and unwanted content at the network level.
 - Besides, the original plan was to utilize ansible to automate the Pihole bootstrap. However, the installation script porovided by the Pihole maintainers is not easy to automate it. As it requires user interaction during the installation process.

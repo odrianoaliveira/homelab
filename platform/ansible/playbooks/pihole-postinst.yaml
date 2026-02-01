@@ -1,0 +1,60 @@
+---
+- name: Pi Hole Post-Installation Tasks
+  hosts: pihole_nodes
+  become: true
+  vars:
+    keepalived_state: "{{ inventory_hostname is regex('^pi1') | ternary('MASTER', 'BACKUP') }}"
+    keepalived_priority: "{{ inventory_hostname is regex('^pi1') | ternary(255, 100) }}"
+    keepalived_interface: "wlan0"
+    keepalived_virtual_router_id: 51
+    keepalived_auth_pass: "{{ keepalived_pass }}"
+    keepalived_virtual_ip: "192.168.8.10/24"
+  tasks:
+    - name: Install DNS and HA packages
+      apt:
+        name:
+          - unbound
+          - keepalived
+        state: present
+        update_cache: yes
+
+    - name: Configure unbound for Pi-hole
+      template:
+        src: pi-hole.conf.j2
+        dest: /etc/unbound/unbound.conf.d/pi-hole.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify: restart unbound
+
+    - name: Validate unbound configuration
+      command: unbound-checkconf
+      changed_when: false
+
+    - name: Configure keepalived for high availability
+      template:
+        src: keepalived.j2
+        dest: /etc/keepalived/keepalived.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify: restart keepalived
+
+    - name: Enable and start services
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      loop:
+        - unbound
+        - keepalived
+
+  handlers:
+    - name: restart unbound
+      systemd:
+        name: unbound
+        state: restarted
+    - name: restart keepalived
+      systemd:
+        name: keepalived
+        state: restarted
