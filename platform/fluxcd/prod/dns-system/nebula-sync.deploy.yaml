@@ -26,3 +26,9 @@ spec:
           requests:
             cpu: "150m"
             memory: "128Mi"
+        envFrom:
+        - configMapRef:
+            name: nebula-sync-cfg
+        - secretRef:
+            name: nebula-sync-secret
+      restartPolicy: Always
