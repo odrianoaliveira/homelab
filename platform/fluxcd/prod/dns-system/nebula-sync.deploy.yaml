@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nebula-sync
+    environment: production
+  name: nebula-sync
+  namespace: dns-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nebula-sync
+  template:
+    metadata:
+      labels:
+        app: nebula-sync
+    spec:
+      containers:
+      - image: ghcr.io/lovelaze/nebula-sync:v0.11.1
+        name: nebula-sync
+        resources:
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
+          requests:
+            cpu: "150m"
+            memory: "128Mi"
