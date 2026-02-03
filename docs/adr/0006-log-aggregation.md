@@ -1,4 +1,4 @@
-# ADR 001: Adopt Loki for Kubernetes Log Aggregation
+# ADR 006: Adopt Loki for Kubernetes Log Aggregation
 
 **Date:** 2026-02-03
 
