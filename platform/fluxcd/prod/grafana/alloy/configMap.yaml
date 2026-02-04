@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-config
+  namespace: grafana
+data:
+  config.alloy: |
+    logging {
+      level = "info"
+    }
