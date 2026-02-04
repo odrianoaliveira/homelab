@@ -13,6 +13,10 @@ spec:
         kind: HelmRepository
         name: grafana-repo
       version: v1.5.3
+  valuesFrom:
+    - kind: ConfigMap
+      name: alloy-config
+      valuesKey: values.yaml
   interval: 10m
   timeout: 5m
   releaseName: alloy
