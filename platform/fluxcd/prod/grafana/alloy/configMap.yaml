@@ -4,6 +4,12 @@ metadata:
   name: alloy-config
   namespace: grafana
 data:
+  values.yaml: |
+    alloy:
+      configMap:
+        create: false
+        name: alloy-config
+        key: config.alloy
   config.alloy: |
     logging {
       level = "info"
