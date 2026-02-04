@@ -1,0 +1,18 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloy-release
+  namespace: grafana
+spec:
+  chart:
+    spec:
+      chart: alloy
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-repo
+      version: v1.5.3
+  interval: 10m
+  timeout: 5m
+  releaseName: alloy
