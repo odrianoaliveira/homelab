@@ -1,0 +1,10 @@
+# helm repo add grafana https://grafana.github.io/helm-charts
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: grafana-repo
+  namespace: grafana
+spec:
+  interval: 1m0s
+  url: https://grafana.github.io/helm-charts
