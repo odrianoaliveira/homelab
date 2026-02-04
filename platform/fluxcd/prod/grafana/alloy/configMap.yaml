@@ -5,9 +5,6 @@ metadata:
   namespace: grafana
 data:
   config.alloy: |
-    // ...existing code...
-    // Your Alloy config goes here.
-    // Example placeholder:
     logging {
       level = "info"
     }
