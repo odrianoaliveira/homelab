@@ -80,11 +80,11 @@ data:
           }
         }
       }
-      forward_to = [loki.write.echo.receiver]
+      forward_to = [loki.echo.console.receiver]
     }
 
     // Echo to console for testing
-    loki.write.echo "echo" {
+    loki.echo "console" {
     }
 
     // Write to Loki
