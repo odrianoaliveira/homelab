@@ -55,13 +55,14 @@ data:
       targets         = discovery.kubernetes.pods.targets
       
       // drop logs from kube-system and monitoring namespaces to reduce noise
-      relabel_rules = [
+      relabel_rules = [ 
         {
-          source_labels = ["__meta_kubernetes_namespace"]
-          action        = "drop"
-          regex         = "kube-system|monitoring"
+          source_labels = ["__meta_kubernetes_namespace"],
+          action        = "drop",
+          regex         = "kube-system|monitoring",
         },
       ]
+
       forward_to      = [loki.process.add_labels.receiver]
     }
 
