@@ -53,16 +53,6 @@ data:
     // Forward all pod logs to the processing stage
     loki.source.kubernetes "all_pods" {
       targets         = discovery.kubernetes.pods.targets
-      
-      // drop logs from kube-system and monitoring namespaces to reduce noise
-      relabel_rules = [ 
-        {
-          source_labels = ["__meta_kubernetes_namespace"],
-          action        = "drop",
-          regex         = "kube-system|monitoring",
-        },
-      ]
-
       forward_to      = [loki.process.add_labels.receiver]
     }
 
@@ -73,14 +63,13 @@ data:
 
     // Process stage to add labels
     loki.process "add_labels" {
-      stage {
-        labels {
+      stage.labels {
           values = {
             cluster = "production",
             env     = "homelab",
-          }
         }
       }
+
       forward_to = [loki.echo.console.receiver]
     }
 
