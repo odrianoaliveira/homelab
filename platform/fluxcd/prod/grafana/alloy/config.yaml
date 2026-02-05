@@ -46,8 +46,9 @@ data:
     }
 
     // Discover all pods
-    discovery.kubernetes "pods" {
-      role = "pod"
+    discovery.kubelet "pods" {
+      bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      namespaces = ["longhorn-system", "grafana", "dns-system", "flux-system"]
     }
 
     // Forward all pod logs to the processing stage
