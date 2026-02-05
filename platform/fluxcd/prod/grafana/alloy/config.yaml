@@ -53,7 +53,7 @@ data:
 
     // Forward all pod logs to the processing stage
     loki.source.kubernetes "all_pods" {
-      targets         = discovery.kubernetes.pods.targets
+      targets         = discovery.kubelet.pods.targets
       forward_to      = [loki.process.add_labels.receiver]
     }
 
