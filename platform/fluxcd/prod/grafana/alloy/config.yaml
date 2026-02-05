@@ -10,10 +10,10 @@ data:
         create: false
         name: alloy-config
         key: config.alloy
-      controller:
-        hostNetwork: true
-        hostPID: true
-        dnsPolicy: ClusterFirstWithHostNet
+    controller:
+      hostNetwork: true
+      hostPID: true
+      dnsPolicy: ClusterFirstWithHostNet
   config.alloy: |
     logging {
       level = "info"
