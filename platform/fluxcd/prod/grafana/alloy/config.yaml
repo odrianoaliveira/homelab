@@ -51,8 +51,11 @@ data:
 
     // Discover all pods
     discovery.kubelet "pods" {
-      url = "http://" + sys.env("HOSTNAME") + ":10250"
+      url = "https://" + sys.env("HOSTNAME") + ":10250"
       bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      tls_config {
+        insecure_skip_verify = true
+      }
       namespaces = ["longhorn-system", "grafana", "dns-system", "flux-system"]
     }
 
