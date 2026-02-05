@@ -59,7 +59,7 @@ data:
         {
           source_labels = ["__meta_kubernetes_namespace"],
           action        = "drop",
-          regex         = "kube-system|monitoring"
+          regex         = "kube-system|monitoring",
         },
       ]
       forward_to      = [loki.process.add_labels.receiver]
