@@ -13,4 +13,81 @@ data:
   config.alloy: |
     logging {
       level = "info"
+      format = "json"
     }
+
+    // Collect node logs
+    local.file_match "node_logs" {
+      path_targets = [
+        {
+          __path__  = "/var/log/kubelet.log",
+          job       = "node/kubelet",
+          node_name = sys.env("HOSTNAME"),
+          cluster   = "production",
+        },
+        {
+          __path__  = "/var/log/containerd.log",
+          job       = "node/containerd",
+          node_name = sys.env("HOSTNAME"),
+          cluster   = "production",
+        },
+        {
+          __path__  = "/var/log/talos.log",
+          job       = "node/talos",
+          node_name = sys.env("HOSTNAME"),
+          cluster   = "production",
+        },
+      ]
+    }
+
+    loki.source.file "node_logs" {
+      targets    = local.file_match.node_logs.targets
+      forward_to = [loki.process.add_labels.receiver]
+    }
+
+    // Discover all pods
+    discovery.kubernetes "pods" {
+      role = "pod"
+    }
+
+    // Forward all pod logs to the processing stage
+    loki.source.kubernetes "all_pods" {
+      targets         = discovery.kubernetes.pods.targets
+      
+      // drop logs from kube-system and monitoring namespaces to reduce noise
+      relabel_rules   = {
+        source_labels = ["__meta_kubernetes_namespace"],
+        action        = "drop",
+        regex         = "kube-system|monitoring" },
+      }
+      forward_to      = [loki.process.add_labels.receiver]
+    }
+
+    // Forward k8s events to the processing stage
+    loki.source.kubernetes_events "cluster_events" {
+      forward_to = [loki.process.add_labels.receiver]
+    }
+
+    // Process stage to add labels
+    loki.process "add_labels" {
+      stage {
+        labels {
+          values = {
+            cluster = "production",
+            env     = "homelab",
+          }
+        }
+      }
+      forward_to = [loki.write.echo.receiver]
+    }
+
+    // Echo to console for testing
+    loki.write.echo "echo" {
+    }
+
+    // Write to Loki
+    //loki.write "loki" {
+    //  endpoint {
+    //    url = "http://loki:3100/loki/api/v1/push"
+    //  }
+    //}
