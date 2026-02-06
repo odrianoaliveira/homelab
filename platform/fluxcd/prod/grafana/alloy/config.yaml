@@ -83,8 +83,8 @@ data:
     }
 
     // Echo to console for testing
-    loki.echo "console" {
-    }
+    // loki.echo "console" {
+    // }
 
     // Write to Loki
     //loki.write "loki" {
